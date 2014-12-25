@@ -64,7 +64,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'profbrew',
-        'USERNAME': 'root',
+        'USERNAME':'root',
         'PASSWORD':'MyNewPass',
     }
 }
