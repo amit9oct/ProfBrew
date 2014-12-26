@@ -64,11 +64,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'profbrew',
-        'USERNAME':'root',
+        'USER':'root',
         'PASSWORD':'MyNewPass',
     }
 }
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR,'profbrew.sqlite3'),
+    }
+}
+"""
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
