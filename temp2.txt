@@ -1,0 +1,4 @@
+BEGIN;
+CREATE TABLE `University_college` (`university_id` varchar(100) NOT NULL PRIMARY KEY, `_university_name` varchar(100) NOT NULL, `_email` varchar(75) NOT NULL, `_address` varchar(500) NULL, `_mobile_number` bigint NULL, `college_name` varchar(100) NOT NULL PRIMARY KEY);
+
+COMMIT;

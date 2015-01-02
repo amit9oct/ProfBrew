@@ -4,6 +4,7 @@ This file contains various models for our databases.
 """
 from django.db import models
 from django.utils import timezone
+from University.models import College
 
 
 #Some Important Parameters
@@ -70,6 +71,8 @@ class Users(models.Model):
         self.mobile_number=number
     def update_type(self,user_type):
         self.user_type=user_type
+    class Meta:
+        abstract=True;
         
 class Student(Users):
     """
@@ -84,8 +87,7 @@ class Student(Users):
             _discipline -> is the name of the discipline of the student.
     """
     _contributing_factor = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
-    _university = models.CharField(max_length=MAX_LEN_OF_UNIV_NAME,null=False,default=DEFAULT_FIELD_VALUE)  #Should be foreign key
-    _college = models.CharField(max_length=MAX_LEN_OF_CLG_NAME,null=False,default=DEFAULT_FIELD_VALUE)      #Should be a foreign key
+    _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)      #Is a foreign key
     _degree_pursued = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     _discipline = models.CharField(max_length=MAX_LEN_OF_DIS_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     def get_contributing_factor(self):
@@ -97,7 +99,7 @@ class Student(Users):
     def update_contributing_factor(self,contributing_factor):
         self._contributing_factor=contributing_factor
     def update_university(self,university):
-        self._university=university
+        self._college.update_university(university)
     def update_college(self,college):
         self._college=college
       
@@ -109,8 +111,7 @@ class Professor(Users):
             _ratings -> has the compact rating of the professor
     """
     _ratings = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)  
-    _university = models.CharField(max_length=MAX_LEN_OF_UNIV_NAME,null=False,default=DEFAULT_FIELD_VALUE)
-    _college = models.CharField(max_length=MAX_LEN_OF_CLG_NAME,null=False,default=DEFAULT_FIELD_VALUE)  #Should Be Foreign Key
+    _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)  #Is a Foreign Key
     _qualifications = models.CharField(max_length=MAX_LEN_OF_PROF_QUALIFICATION,null=False,default=DEFAULT_FIELD_VALUE)
     _area_of_interest = models.CharField(max_length=MAX_LEN_OF_PROF_INTEREST,null=False,default=DEFAULT_FIELD_VALUE)
     _courses_teaching = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
@@ -145,6 +146,6 @@ class Professor(Users):
     def update_popular_name(self,name):
         self._popular_name=name
     def update_university(self,university):
-        self._university=university
+        self._college.update_university(university)
     def update_ratings(self,ratings):
         self._ratings=ratings

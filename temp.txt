@@ -1,0 +1,9 @@
+BEGIN;
+CREATE TABLE `Users_professor` (`_username` varchar(15) NOT NULL PRIMARY KEY, `name` varchar(200) NOT NULL, `_password` varchar(30) NOT NULL, `user_type` integer NOT NULL, `_email` varchar(75) NOT NULL, `_mobile_number` bigint NULL, `_date_joined` datetime NOT NULL, `_ratings` bigint NOT NULL, `_qualifications` varchar(200) NOT NULL, `_area_of_interest` varchar(200) NOT NULL, `_courses_teaching` varchar(200) NOT NULL, `_best_known_for` varchar(200) NOT NULL, `_popular_name` varchar(200) NOT NULL, `_college_id` varchar(100) NOT NULL);
+CREATE TABLE `Users_student` (`_username` varchar(15) NOT NULL PRIMARY KEY, `name` varchar(200) NOT NULL, `_password` varchar(30) NOT NULL, `user_type` integer NOT NULL, `_email` varchar(75) NOT NULL, `_mobile_number` bigint NULL, `_date_joined` datetime NOT NULL, `_contributing_factor` bigint NOT NULL, `_degree_pursued` varchar(100) NOT NULL, `_discipline` varchar(100) NOT NULL, `_college_id` varchar(100) NOT NULL);
+CREATE INDEX Users_professor_2eee7ae9 ON `Users_professor` (`_college_id`);
+ALTER TABLE `Users_professor` ADD CONSTRAINT `Users_p__college_id_7db4ade5_fk_University_college_university_id` FOREIGN KEY (`_college_id`) REFERENCES `University_college` (`university_id`);
+CREATE INDEX Users_student_2eee7ae9 ON `Users_student` (`_college_id`);
+ALTER TABLE `Users_student` ADD CONSTRAINT `Users_st__college_id_eb0f6d2_fk_University_college_university_id` FOREIGN KEY (`_college_id`) REFERENCES `University_college` (`university_id`);
+
+COMMIT;
