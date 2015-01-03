@@ -13,6 +13,8 @@ MAX_LEN_OF_CLG_NAME=100
 DEFAULT_FIELD_VALUE=None
 
 
+#Main class definitions
+
 class University(models.Model):
     university_id = models.CharField(max_length=MAX_LEN_OF_UNIV_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     _university_name = models.CharField(max_length=MAX_LEN_OF_UNIV_NAME,default=DEFAULT_FIELD_VALUE,null=False)

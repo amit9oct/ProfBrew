@@ -16,10 +16,10 @@ class Migration(migrations.Migration):
                 ('university_id', models.CharField(default=None, max_length=100)),
                 ('_university_name', models.CharField(default=None, max_length=100)),
                 ('_email', models.EmailField(default=None, max_length=75)),
-                ('_address', models.CharField(null=True, default=None, max_length=500)),
+                ('_address', models.CharField(max_length=500, default=None, null=True)),
                 ('_mobile_number', models.BigIntegerField(null=True)),
                 ('college_name', models.CharField(default=None, max_length=100)),
-                ('college_id', models.CharField(default=None, primary_key=True, serialize=False, max_length=100)),
+                ('college_id', models.CharField(primary_key=True, default=None, max_length=100, serialize=False)),
             ],
             options={
                 'abstract': False,

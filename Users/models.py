@@ -19,8 +19,24 @@ MAX_LEN_OF_PROF_QUALIFICATION=200
 MAX_LEN_OF_PROF_INTEREST=200
 MAX_LEN_OF_PROF_COURSES=200
 DEFAULT_FIELD_VALUE=None
+DEFAULT_NUMBER_OF_QUALIFICATIONS=1
 
-
+class Qualification_Type(models.Model):
+    qualification_name = models.CharField(max_length=MAX_LEN_OF_PROF_QUALIFICATION,default=DEFAULT_FIELD_VALUE)
+    def __str__(self):
+        return self.qualification_name
+    
+class Prof_Position(models.Model):
+    priority=models.BigIntegerField(null=True)
+    position_name = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,default=DEFAULT_FIELD_VALUE)
+    def __str__(self):
+        return self.position_name
+    
+class Prof_Qualifications(models.Model):
+    number_of_qualifications = models.IntegerField(null=False,default=DEFAULT_NUMBER_OF_QUALIFICATIONS)
+    qualifications=models.ManyToManyField(Qualification_Type)
+    def __str__(self):
+        return str(self.number_of_qualifications)
 
 class Users(models.Model):
     """
@@ -110,13 +126,14 @@ class Professor(Users):
         professor and the way he is rated by the students of the respective college.
             _ratings -> has the compact rating of the professor
     """
-    _ratings = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)  
+    _ratings = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
     _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)  #Is a Foreign Key
-    _qualifications = models.CharField(max_length=MAX_LEN_OF_PROF_QUALIFICATION,null=False,default=DEFAULT_FIELD_VALUE)
+    _qualifications = models.ForeignKey(Prof_Qualifications)
     _area_of_interest = models.CharField(max_length=MAX_LEN_OF_PROF_INTEREST,null=False,default=DEFAULT_FIELD_VALUE)
     _courses_teaching = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
     _best_known_for = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
     _popular_name = models.CharField(max_length=MAX_LEN_OF_NAME,null=False,default=DEFAULT_FIELD_VALUE)
+    _position=models.ManyToManyField(Prof_Position)
     def get_university(self):
         return self._unversity
     def get_college(self):
@@ -133,6 +150,10 @@ class Professor(Users):
         return self._raitngs
     def get_qualifications(self):
         return self._qualifications
+    def get_position(self):
+        return self._position
+    def update_position(self,position):
+        self._position=position
     def update_qualifications(self,qualifications):
         self._qualifications=qualifications
     def upadate_college(self,college):
