@@ -20,6 +20,13 @@ MAX_LEN_OF_PROF_INTEREST=200
 MAX_LEN_OF_PROF_COURSES=200
 DEFAULT_FIELD_VALUE=None
 DEFAULT_NUMBER_OF_QUALIFICATIONS=1
+MAX_LEN_OF_COURSE_NAME=200
+MAX_LEN_OF_BRANCH_NAME=100
+
+class Courses(models.Model):
+    course_name = models.CharField(max_length=MAX_LEN_OF_COURSE_NAME, default=DEFAULT_FIELD_VALUE)
+    def __str__(self):
+        return self.course_name
 
 class Qualification_Type(models.Model):
     qualification_name = models.CharField(max_length=MAX_LEN_OF_PROF_QUALIFICATION,default=DEFAULT_FIELD_VALUE)
@@ -31,13 +38,22 @@ class Prof_Position(models.Model):
     position_name = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,default=DEFAULT_FIELD_VALUE)
     def __str__(self):
         return self.position_name
-    
-class Prof_Qualifications(models.Model):
-    number_of_qualifications = models.IntegerField(null=False,default=DEFAULT_NUMBER_OF_QUALIFICATIONS)
-    qualifications=models.ManyToManyField(Qualification_Type)
-    def __str__(self):
-        return str(self.number_of_qualifications)
 
+class Branch(models.Model):
+    _branch_name = models.CharField(max_length=MAX_LEN_OF_BRANCH_NAME,null=True,default=DEFAULT_FIELD_VALUE)
+    _job_satisifaction = models.IntegerField(null=True,default=DEFAULT_FIELD_VALUE)
+    _research_opportunities = models.IntegerField(null=True,default=DEFAULT_FIELD_VALUE)
+    def __str__(self):
+        return self._branch_name
+    def get_job_satisifaction(self):
+        return self._job_satisifaction
+    def get_research_opportunities(self):
+        return self._research_opportunities
+    def update_job_satisifaction(self,job_satisifaction):
+        self._job_satisifaction = job_satisifaction
+    def update_research_opportunities(self,research_opportunities):
+        self._research_opportunities = research_opportunities
+    
 class Users(models.Model):
     """
         Users()- Extends Django's pre-implimented User class. 
@@ -88,7 +104,7 @@ class Users(models.Model):
     def update_type(self,user_type):
         self.user_type=user_type
     class Meta:
-        abstract=True;
+        abstract=True
         
 class Student(Users):
     """
@@ -102,10 +118,19 @@ class Student(Users):
                                *Suggestion: Change it to Enum
             _discipline -> is the name of the discipline of the student.
     """
+    FIRST_YEAR = 1
+    SECOND_YEAR = 2
+    THIRD_YEAR = 3
+    FOURTH_YEAR = 4
+    FIFTH_YEAR = 5
+    OTHER = 0
+    YEAR_TYPE = ((OTHER,'Other'),(FIRST_YEAR,'First Year'),(SECOND_YEAR,'Second Year'),(THIRD_YEAR,'Third Year'),(FOURTH_YEAR,'Fourth Year'),(FIFTH_YEAR,'Fifth Year'),)
+    _year = models.IntegerField(choices=YEAR_TYPE,default=OTHER,null=False)
     _contributing_factor = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
     _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)      #Is a foreign key
     _degree_pursued = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     _discipline = models.CharField(max_length=MAX_LEN_OF_DIS_NAME,null=False,default=DEFAULT_FIELD_VALUE)
+    _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE)
     def get_contributing_factor(self):
         return self._contributing_factor
     def get_university(self):
@@ -128,12 +153,16 @@ class Professor(Users):
     """
     _ratings = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
     _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)  #Is a Foreign Key
-    _qualifications = models.ForeignKey(Prof_Qualifications)
+    _qualifications = models.ManyToManyField(Qualification_Type)
     _area_of_interest = models.CharField(max_length=MAX_LEN_OF_PROF_INTEREST,null=False,default=DEFAULT_FIELD_VALUE)
     _courses_teaching = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
     _best_known_for = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
     _popular_name = models.CharField(max_length=MAX_LEN_OF_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     _position=models.ManyToManyField(Prof_Position)
+    _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE)
+    #If getting wrong no of qualifications, then wrong query written down
+    def get_number_of_qualifications(self):
+        return self._qualifications.count()
     def get_university(self):
         return self._unversity
     def get_college(self):
