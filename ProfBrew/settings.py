@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'University',
     'Ratings',
     'SearchEngine',
+    'Reviews',
 )
 
 MIDDLEWARE_CLASSES = (

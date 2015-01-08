@@ -13,13 +13,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='College',
             fields=[
-                ('university_id', models.CharField(max_length=100, default=None)),
-                ('_university_name', models.CharField(max_length=100, default=None)),
-                ('_email', models.EmailField(max_length=75, default=None)),
-                ('_address', models.CharField(max_length=500, null=True, default=None)),
+                ('university_id', models.CharField(default=None, max_length=100)),
+                ('_university_name', models.CharField(default=None, max_length=100)),
+                ('_email', models.EmailField(default=None, max_length=75)),
+                ('_address', models.CharField(default=None, max_length=500, null=True)),
                 ('_mobile_number', models.BigIntegerField(null=True)),
-                ('college_name', models.CharField(max_length=100, default=None)),
-                ('college_id', models.CharField(max_length=100, default=None, serialize=False, primary_key=True)),
+                ('college_name', models.CharField(default=None, max_length=100)),
+                ('college_id', models.CharField(serialize=False, max_length=100, default=None, primary_key=True)),
             ],
             options={
                 'abstract': False,

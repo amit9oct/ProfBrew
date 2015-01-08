@@ -23,8 +23,8 @@ DEFAULT_NUMBER_OF_QUALIFICATIONS=1
 MAX_LEN_OF_COURSE_NAME=200
 MAX_LEN_OF_BRANCH_NAME=100
 
-class Courses(models.Model):
-    course_name = models.CharField(max_length=MAX_LEN_OF_COURSE_NAME, default=DEFAULT_FIELD_VALUE)
+class Course(models.Model):
+    course_name = models.CharField(null=False,max_length=MAX_LEN_OF_COURSE_NAME, default=DEFAULT_FIELD_VALUE)
     def __str__(self):
         return self.course_name
 
@@ -56,7 +56,7 @@ class Branch(models.Model):
     
 class Users(models.Model):
     """
-        Users()- Extends Django's pre-implimented User class. 
+        Users()- Extends Django's pre-implemented User class. 
         The User class is meant for storing the details of the users into database and keep track of the users.
             _username -> private field and is the primary key.
             name -> has the name of the person. It is public.
@@ -104,7 +104,7 @@ class Users(models.Model):
     def update_type(self,user_type):
         self.user_type=user_type
     class Meta:
-        abstract=True
+        abstract=True;
         
 class Student(Users):
     """
@@ -116,7 +116,7 @@ class Student(Users):
                                    It is calculated using a an algorithm.
             _degree_persued -> is the name of the degree being pursued by the student.
                                *Suggestion: Change it to Enum
-            _discipline -> is the name of the discipline of the student.
+            _branch -> is the name of the discipline of the student.
     """
     FIRST_YEAR = 1
     SECOND_YEAR = 2
@@ -129,8 +129,8 @@ class Student(Users):
     _contributing_factor = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
     _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)      #Is a foreign key
     _degree_pursued = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,null=False,default=DEFAULT_FIELD_VALUE)
-    _discipline = models.CharField(max_length=MAX_LEN_OF_DIS_NAME,null=False,default=DEFAULT_FIELD_VALUE)
-    _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE)
+    #_discipline = models.CharField(max_length=MAX_LEN_OF_DIS_NAME,null=False,default=DEFAULT_FIELD_VALUE)
+    _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE);
     def get_contributing_factor(self):
         return self._contributing_factor
     def get_university(self):
@@ -155,11 +155,11 @@ class Professor(Users):
     _college = models.ForeignKey(College,default=DEFAULT_FIELD_VALUE,blank=False)  #Is a Foreign Key
     _qualifications = models.ManyToManyField(Qualification_Type)
     _area_of_interest = models.CharField(max_length=MAX_LEN_OF_PROF_INTEREST,null=False,default=DEFAULT_FIELD_VALUE)
-    _courses_teaching = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
+    _courses_teaching = models.ManyToManyField(Course)
     _best_known_for = models.CharField(max_length=MAX_LEN_OF_PROF_COURSES,null=False,default=DEFAULT_FIELD_VALUE)
     _popular_name = models.CharField(max_length=MAX_LEN_OF_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     _position=models.ManyToManyField(Prof_Position)
-    _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE)
+    _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE);
     #If getting wrong no of qualifications, then wrong query written down
     def get_number_of_qualifications(self):
         return self._qualifications.count()

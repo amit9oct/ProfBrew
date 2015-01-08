@@ -16,9 +16,9 @@ class Ratings(models.Model):
     """
     _number_of_likes = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
     _number_of_dislikes = models.BigIntegerField(null=False,default=DEFAULT_FIELD_VALUE)
-    _rate = models.BigIntegerField(null=False,default=0)
+    _rate = models.FloatField(null=False,default=0)
     def get_total_like(self):
-        return self._number_of_likes+self._number_of_dislikes
+        return self._number_of_likes-self._number_of_dislikes
     class Meta:
         abstract=True
 
