@@ -1,3 +1,7 @@
 from django.contrib import admin
+from SearchEngine.models import SearchMadeByProfessor, SearchMadeByStudent,\
+    SearchMadeByVisitor
 
-# Register your models here.
+admin.site.register(SearchMadeByProfessor)
+admin.site.register(SearchMadeByStudent)
+admin.site.register(SearchMadeByVisitor)

@@ -1,0 +1,61 @@
+{% extends "base/base.html" %}
+
+{% block loginBase %}
+
+	<li><a href = "../profile"> Hello! </a></li>
+	<li><a href = "../home"> Logout </a></li>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+   
+   
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">{% block name %}{%endblock%}</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"> </div>
+                    
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+    
+                        <td>Email:</td>
+                        <div id="id1">
+                        <td>{% block email %}{%endblock%}<button onclick="document.getElementById('id1').style.diaplay = none;">Edit</button></td>
+                        </div> 
+                      </tr>
+                      <tr>
+                        <td>Mobile Number:</td>
+                        <td>{% block phone %}{%endblock%}</td>
+                      </tr>
+                      <tr>
+                        <td>College</td>
+                        <td>{% block college %}{%endblock%}</td>
+                      </tr>
+                      {% block details %}{% endblock %}
+                    </tbody>
+                  </table>
+                  <div class = "row">
+                  	<div class = "col-md-offset-6">
+                  		<a href="#" class="btn btn-primary">Edit Profile</a>
+                  		<a href="#" class="btn btn-primary">Rate Prof</a>
+                  	</div>
+                  </div>
+                </div>
+              </div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

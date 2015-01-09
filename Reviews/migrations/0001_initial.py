@@ -7,19 +7,19 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Users', '0003_auto_20150108_1303'),
         ('University', '0001_initial'),
+        ('Users', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='BranchReviews',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
-                ('_review', models.CharField(null=True, max_length=2000, default=None)),
-                ('_branch', models.ForeignKey(to='Users.Branch', default=None)),
-                ('_college', models.ForeignKey(to='University.College', default=None)),
-                ('_student', models.ForeignKey(to='Users.Student', default=None)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('_review', models.CharField(default=None, null=True, max_length=2000)),
+                ('_branch', models.ForeignKey(default=None, to='Users.Branch')),
+                ('_college', models.ForeignKey(default=None, to='University.College')),
+                ('_student', models.ForeignKey(default=None, to='Users.Student')),
             ],
             options={
                 'abstract': False,
@@ -29,10 +29,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CollegeReviews',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
-                ('_review', models.CharField(null=True, max_length=2000, default=None)),
-                ('_college', models.ForeignKey(to='University.College', default=None)),
-                ('_student', models.ForeignKey(to='Users.Student', default=None)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('_review', models.CharField(default=None, null=True, max_length=2000)),
+                ('_college', models.ForeignKey(default=None, to='University.College')),
+                ('_student', models.ForeignKey(default=None, to='Users.Student')),
             ],
             options={
                 'abstract': False,
@@ -42,10 +42,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProfessorReviews',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
-                ('_review', models.CharField(null=True, max_length=2000, default=None)),
-                ('_professor', models.ForeignKey(to='Users.Professor', default=None)),
-                ('_student', models.ForeignKey(to='Users.Student', default=None)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('_review', models.CharField(default=None, null=True, max_length=2000)),
+                ('_professor', models.ForeignKey(default=None, to='Users.Professor')),
+                ('_student', models.ForeignKey(default=None, to='Users.Student')),
             ],
             options={
                 'abstract': False,

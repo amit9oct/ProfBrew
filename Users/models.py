@@ -5,7 +5,7 @@ This file contains various models for our databases.
 from django.db import models
 from django.utils import timezone
 from University.models import College
-
+from posixpath import _joinrealpath
 
 #Some Important Parameters
 MAX_LEN_OF_USERNAME=15
@@ -56,7 +56,7 @@ class Branch(models.Model):
     
 class Users(models.Model):
     """
-        Users()- Extends Django's pre-implemented User class. 
+        Users()- Extends Django's pre-implimented User class. 
         The User class is meant for storing the details of the users into database and keep track of the users.
             _username -> private field and is the primary key.
             name -> has the name of the person. It is public.
@@ -80,27 +80,32 @@ class Users(models.Model):
         """ __str__()- returns the name of the user """
         return self.name
     def get_email(self):
-        return self.email
+        return self._email
     def get_mobile_number(self):
-        return self.mobile_number
+        return self._mobile_number
     def get_name(self):
         return self.name
     def get_user_type(self):
-        return self.user_type
+        if self.user_type == Users.STUDENT:
+            return 'Student'
+        if self.user_type == Users.PROFESSOR:
+            return 'Professor'
+        if self.user_type == Users.VISITOR:
+            return 'Visitor'
     def get_username(self):
-        return self.username
+        return self._username
     def get_join_date_time(self):
-        return self.date_joined
+        return self._date_joined
     def update_name(self,name):
         self.name=name
     def update_username(self,username):
-        self.username=username
+        self._username=username
     def update_password(self,password):
-        self.password=password
+        self._password=password
     def update_email(self,email):
-        self.email=email
+        self._email=email
     def update_mobile_number(self,number):
-        self.mobile_number=number
+        self._mobile_number=number
     def update_type(self,user_type):
         self.user_type=user_type
     class Meta:
@@ -131,6 +136,10 @@ class Student(Users):
     _degree_pursued = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     #_discipline = models.CharField(max_length=MAX_LEN_OF_DIS_NAME,null=False,default=DEFAULT_FIELD_VALUE)
     _branch = models.ForeignKey(Branch,null=False,default=DEFAULT_FIELD_VALUE);
+    def get_degree_pursued(self):
+        return self._degree_pursued
+    def get_year(self):
+        return Student.YEAR_TYPE[self._year][1]        
     def get_contributing_factor(self):
         return self._contributing_factor
     def get_university(self):
@@ -143,6 +152,10 @@ class Student(Users):
         self._college.update_university(university)
     def update_college(self,college):
         self._college=college
+    def update_year(self,year):
+        self._year = year
+    def update_degree_pursued(self,degree_pursued):
+        self._degree_pursued = degree_pursued
       
 class Professor(Users):
     """

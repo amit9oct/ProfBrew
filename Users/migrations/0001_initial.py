@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Branch',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('_branch_name', models.CharField(default=None, max_length=100, null=True)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('_branch_name', models.CharField(default=None, null=True, max_length=100)),
                 ('_job_satisifaction', models.IntegerField(default=None, null=True)),
                 ('_research_opportunities', models.IntegerField(default=None, null=True)),
             ],
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Course',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
                 ('course_name', models.CharField(default=None, max_length=200)),
             ],
             options={
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Prof_Position',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
                 ('priority', models.BigIntegerField(null=True)),
                 ('position_name', models.CharField(default=None, max_length=100)),
             ],
@@ -49,13 +49,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Professor',
             fields=[
-                ('_username', models.CharField(serialize=False, max_length=15, default=None, primary_key=True)),
+                ('_username', models.CharField(default=None, primary_key=True, max_length=15, serialize=False)),
                 ('name', models.CharField(default=None, max_length=200)),
                 ('_password', models.CharField(default=None, max_length=30)),
                 ('user_type', models.IntegerField(default=3, choices=[(1, 'Student'), (2, 'Professor'), (3, 'Visitor')])),
                 ('_email', models.EmailField(default=None, max_length=75)),
                 ('_mobile_number', models.BigIntegerField(null=True)),
-                ('_date_joined', models.DateTimeField(default=datetime.datetime(2015, 1, 8, 7, 26, 40, 594307, tzinfo=utc))),
+                ('_date_joined', models.DateTimeField(default=datetime.datetime(2015, 1, 9, 14, 39, 8, 347317, tzinfo=utc))),
                 ('_ratings', models.BigIntegerField(default=None)),
                 ('_area_of_interest', models.CharField(default=None, max_length=200)),
                 ('_best_known_for', models.CharField(default=None, max_length=200)),
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Qualification_Type',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
                 ('qualification_name', models.CharField(default=None, max_length=200)),
             ],
             options={
@@ -83,13 +83,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Student',
             fields=[
-                ('_username', models.CharField(serialize=False, max_length=15, default=None, primary_key=True)),
+                ('_username', models.CharField(default=None, primary_key=True, max_length=15, serialize=False)),
                 ('name', models.CharField(default=None, max_length=200)),
                 ('_password', models.CharField(default=None, max_length=30)),
                 ('user_type', models.IntegerField(default=3, choices=[(1, 'Student'), (2, 'Professor'), (3, 'Visitor')])),
                 ('_email', models.EmailField(default=None, max_length=75)),
                 ('_mobile_number', models.BigIntegerField(null=True)),
-                ('_date_joined', models.DateTimeField(default=datetime.datetime(2015, 1, 8, 7, 26, 40, 594307, tzinfo=utc))),
+                ('_date_joined', models.DateTimeField(default=datetime.datetime(2015, 1, 9, 14, 39, 8, 347317, tzinfo=utc))),
                 ('_year', models.IntegerField(default=0, choices=[(0, 'Other'), (1, 'First Year'), (2, 'Second Year'), (3, 'Third Year'), (4, 'Fourth Year'), (5, 'Fifth Year')])),
                 ('_contributing_factor', models.BigIntegerField(default=None)),
                 ('_degree_pursued', models.CharField(default=None, max_length=100)),
