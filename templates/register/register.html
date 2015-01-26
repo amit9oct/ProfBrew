@@ -7,7 +7,11 @@
 <!-- Script to check if the username already exists -->
                         <script type="text/javascript">
                         	function checkUsername(type){
-                        		var username = document.getElementById('student_username').value;
+                        		var username = null;
+                        		if(type==="Student")
+                        			username = document.getElementById('student_username').value;
+                        		if(type==="Professor")
+                        			username = document.getElementById('professor_username').value;
                         		var tempBool = true;
                         		if(username==""){
                         		  alert("Fill Username!!");
@@ -16,10 +20,11 @@
                         		var validUsername=null;
                         		$.ajax({
   									type: "POST",
-  									url: "/username_present/",
+  									url: "/caller/",
   									data: {
   										username: username,
   										user_type: type,
+  										mnemonics : 'USER_PRESENT',
   										csrfmiddlewaretoken: '{{ csrf_token }}'
   									},
   									success: function(data) {
@@ -167,6 +172,7 @@
                       <br><br><br> 
                       <form action="/register/student/" method="POST" onsubmit="return checkAll('Student')">
                         {% csrf_token %}
+                        <input type="hidden" name="mnemonics" value="REGISTER_STUDENT">
                         <div class="form-group">
                           <input type="text" class="form-control" placeholder="Username" name="username" id="student_username" onchange="checkUsername('Student')">
                         </div>
@@ -223,33 +229,58 @@
                   <div id="professor" class="tab-pane fade">
                       <br><br><br> 
                       
-                      <form>
+                      <form action="/register/professor" method="POST" onsubmit="return checkAll('Professor')">
                         
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Username" name="username" id="professor_username" onchange="checkUsername('Professor')">
+                        </div>
                         <div class="form-group">
                           <div class="row">
                             <div class="col-md-6">  
-                              <input type="text" class="form-control" placeholder="First Name">
+                              <input type="text" class="form-control" placeholder="First Name" name="fname" id="professor_fname">
                             </div>
                             <div class="col-md-6">  
-                              <input type="text" class="form-control" placeholder="Last Name">
+                              <input type="text" class="form-control" placeholder="Last Name" name="lname" id="professor_lname">
                             </div>
                           </div>
                         </div>
-
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Email">
+                          <input type="text" class="form-control" placeholder="Email" name="email" id="professor_email">
                         </div>
-
                         <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Password">
+                          <input type="password" class="form-control" placeholder="Password" name="password" id="professor_password">
                         </div>
-
+                        <div class="form-group" >
+                        	<select class="form-control" placeholder="College Name" name="clgname" id="professor_clg_select" onchange="checkClgSelected('Student')">
+                        	  <option selected="selected" value="">Select Your College</option>
+                        	  {% for college in college_list %}
+                        	     <option value="{{college}}">{{college}}</option>
+                        	  {% endfor %}
+                        	</select>
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Areas Of Interest" name="interests" id="professor_interests">
+                        </div>
+                        <div class="form-group" >
+                        	<select class="form-control" placeholder="Branch" name="branch" id="professor_branch_select" onchange="checkBranchSelected('Professor')">
+                        	  <option selected="selected" value="">Select Your Branch</option>
+                        	  {% for branch in branch_list %}
+                        	     <option value="{{branch}}">{{branch}}</option>
+                        	  {% endfor %}
+                        	</select>
+                        </div>
+                        
+                        <div class="form-group"> 
+                          <input type="text" class="form-control" placeholder="Best Known For" name="best_known_for" id="professor_known_for">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Popular Name" name="popular_name" id="professor_popular_name">
+                        </div>
                         <div class="form-group">  
                           <button type="submit" class="btn btn-info">Sign up</button>
                         </div>
-
                       </form>
-
                       <br>          
                   </div>
                 </div><!-- Tab content ends -->               

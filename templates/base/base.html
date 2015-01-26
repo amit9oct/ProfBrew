@@ -71,37 +71,41 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
           <div class="col-md-offset-1 col-md-7">
-            
-            <form class="navbar-form navbar-left" role="search">
+            <form class="navbar-form navbar-left" role="search" action="/search/">
               <div class="form-group">
                 
-                <input type="text" class="home-search" placeholder="Search By">
+                <input type="text" class="home-search" placeholder="Search By" name = "txtSearch">
                 
               </div>
               <div class="btn-group">
-                <button type="button" class="btn btn-info" id="id1">University</button>
+                <button type="submit" class="btn btn-info" id="id1" name="search_type" value="Professor">Professor</button>
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   <span class="caret"></span>
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#" onclick="document.getElementById('id1').innerHTML = 'University' ">
+                  <li><a href="" onclick="document.getElementById('id1').innerHTML = 'University';document.getElementById('id1').value= 'University' ">
                     University
                   </a></li>
-                  <li><a href="#" onclick="document.getElementById('id1').innerHTML = 'Professor' ">
+                  <li><a href="" onclick="document.getElementById('id1').innerHTML = 'Professor';document.getElementById('id1').value= 'Professor' ">
                     Professor
                   </a></li>
-                </ul>
+                </ul> 
               </div>
             </form>
 
           </div>
 
-          <div class="col-md-3">
+           <div class="col-md-3">
             <ul class="nav navbar-nav navbar-right">
 	          {% block loginBase %}
+	          {% if request.session.user_type %}
+	          	<li><a href = "#"> Hello! {{request.session.username}}</a></li>
+				<li><a href = "/home/"> Logout </a></li>
+	          {% else %}
 	          	<li><a href = "/login/"> Login </a></li>
 	          	<li><a href = "/register/"> SignUp </a></li>
+	          {% endif %}
 	          {% endblock %}           
 	        </ul>
           </div>

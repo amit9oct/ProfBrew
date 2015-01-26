@@ -15,7 +15,8 @@
 		    {{student.get_year}}<button class="btn btn-default pull-right" onclick="hide('year')">Edit</button>
 		</div>
 		<div id="yearText" style= "display:none">
-			<form action="/update/" method="POST">{% csrf_token %}
+			<form action="/caller/" method="POST">{% csrf_token %}
+		        <input type="hidden" name="mnemonics" value="UPDATE_PROFILE">
 		        <div class="input-group">
 					<select name="sltYear">
 						{% for year in yearList %}
@@ -37,7 +38,8 @@
 		    {{student.get_degree_pursued}}<button class="btn btn-default pull-right" onclick="hide('degree')">Edit</button>
 		</div>
 		<div id="degreeText" style= "display:none">
-			<form action="/update/" method="POST">{% csrf_token %}
+			<form action="/caller/" method="POST">{% csrf_token %}
+		        <input type="hidden" name="mnemonics" value="UPDATE_PROFILE">
 		        <div class="input-group">
 					<input type="text" class="form-control" name="textDegree" value="{{ student.get_degree_pursued }}">
 		            <span class="input-group-btn">
