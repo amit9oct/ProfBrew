@@ -7,14 +7,17 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Users', '0002_auto_20150120_0100'),
+        ('Users', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='ProfLog',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('_like', models.BooleanField(default=False)),
+                ('_dislike', models.BooleanField(default=False)),
+                ('_dont_know', models.BooleanField(default=False)),
                 ('_professor', models.ForeignKey(to='Users.Professor')),
                 ('_student', models.ForeignKey(to='Users.Student')),
             ],

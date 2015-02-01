@@ -18,6 +18,11 @@ from Users.views.profile.profile import profile, profile_of_prof
 from Users.views.profile.update import update
 from Ratings.views.basic.rate_prof import rate_prof, LIKES, DISLIKES, DONT_KNOW
 from Logs.views import update_log
+from Reviews.views.add_reviews import add_prof_review, REVIEW_TYPE
+from Reviews.models import ProfessorReviews
+from Users.models import Student, Professor
+from Reviews.views.likes import like_prof_review
+
 """
 This module is God Of Everything :P
 
@@ -78,4 +83,26 @@ def caller(request):
     if mnemonics == 'RATE_PROF':
         opcode = array[1]
         return rate_prof(request,prof_id,opcode)  #to be changed later
+    if mnemonics == 'ADD_FRESH_REVIEW':
+        student_id = request.session['username']
+        prof_id = request.POST['prof_id']
+        review_type = request.POST['review_type']
+        review_text = request.POST['review_text']
+        return add_prof_review(request,prof_id,student_id,None,REVIEW_TYPE['Fresh Review'],review_text)
+    if mnemonics == 'ADD_REVIEW':
+        student_id = request.session['username']
+        prof_id = request.POST['prof_id']
+        review_type = REVIEW_TYPE[request.POST['review_type']]
+        review_id = request.POST['review_id']
+        review_text = request.POST['review_text']
+        return add_prof_review(request,prof_id,student_id,review_id,review_type,review_text)
+    if mnemonics == 'LIKE_PROF_REVIEW':
+        student_id = request.POST['student_id']
+        prof_id = request.POST['prof_id']
+        student = Student.objects.filter(_username=student_id)
+        prof = Professor.objects.filter(_username=prof_id)
+        review_list = ProfessorReviews.objects.filter(_student=student[0],_professor=prof[0])
+        review = review_list[0]
+        factor = request.POST['factor']
+        return like_prof_review(request,review,factor)
     return HttpResponse(str(call_type)+' '+str(mnemonics))

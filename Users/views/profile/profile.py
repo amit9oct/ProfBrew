@@ -2,6 +2,17 @@ from Users.models import Student, Professor
 from University.models import College
 from django.shortcuts import render
 from Ratings.models import ProfRatings
+from Reviews.models import ProfessorReviews
+
+class ReviewView:
+    def __init__(self,review_object,visited):
+        self.review_object = review_object
+        self.visited = visited
+    def is_visited(self):
+        return self.visited
+    def mark_visited(self):
+        self.visited = True
+#review object should have a level tag
 
 def profile(request,user_type):
     temp_username = request.session['username'] 
@@ -23,7 +34,14 @@ def profile(request,user_type):
         positionsList = temp_user[0].get_position().all()
         collegeList = College.objects.all()
         rateList = ProfRatings.objects.filter(_prof =  temp_user[0])
-        context = {'professor': temp_user[0],'collegeList': collegeList,'coursesList':coursesList,'qualificationsList' : qualificationsList,'positionsList' : positionsList,'rate' : rateList[0]}
+        context = {
+                   'professor': temp_user[0],
+                   'collegeList': collegeList,
+                   'coursesList':coursesList,
+                   'qualificationsList' : qualificationsList,
+                   'positionsList' : positionsList,
+                   'rate' : rateList[0]
+        }
         return render(request,'profile/editProfessorProfile.html',context)
 
 def profile_of_prof(request,prof_id,user_type):
@@ -34,5 +52,20 @@ def profile_of_prof(request,prof_id,user_type):
         collegeList = College.objects.all()
         rateList = ProfRatings.objects.filter(_prof = prof_id)
         rate = rateList[0]
-        context = {'professor': temp_user[0],'collegeList': collegeList,'coursesList':coursesList,'qualificationsList' : qualificationsList,'positionsList' : positionsList,'rate' : rate}
+        review_list = ProfessorReviews.objects.filter(_professor=temp_user)
+        context = {
+                   'professor': temp_user[0],
+                   'collegeList': collegeList,
+                   'coursesList':coursesList,
+                   'qualificationsList' : qualificationsList,
+                   'positionsList' : positionsList,
+                   'rate' : rate,
+                   'review_list':review_list,
+        }
         return render(request,'profile/professorProfile.html',context)
+
+"""
+can't load reviews from normal rendering because it requires recursive calls
+make a button load reviews and send ajax request and then using that make recurssive calls
+load them up in chunks
+"""

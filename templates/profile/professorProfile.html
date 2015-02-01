@@ -1,4 +1,62 @@
 {% extends "profile/profile.html" %}
+{% block js %}
+	<script type="text/javascript">
+		function hide(id){
+			document.getElementById(id).style.display = 'none';
+			document.getElementById(id + 'Text').style.display = 'block';
+		}
+		function likes(factor,student_id,prof_id){
+			$.ajax({
+					type: "POST",
+					url: "/like/review/",
+					data: {
+						mnemonics : 'LIKE_PROF_REVIEW',
+						prof_id : prof_id,
+						student_id : student_id,
+						factor: factor,
+						csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+					success: function(data) {
+					document.getElementById('spnLike'+student_id).innerHTML = data
+						/*if(data!=="False"){
+							tempBool = false;
+				        	alert(data);
+				        	location.reload();
+				        }*/
+				    },
+				    failure: function(data) { 
+				        alert('Got an error dude');
+				    },
+					dataType: "html"
+			});
+		}
+		function add_review(review_id){
+			var review_text = document.getElementById(review_id+'Text')
+			$.ajax({
+					type: "POST",
+					url: "/add/review/",
+					data: {
+						mnemonics : 'ADD_REVIEW',
+						prof_id : '{{professor.get_name}}',
+						review_id : review_id,
+						review_text : review_text,
+						csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+					success: function(data) {
+						/*if(data!=="False"){
+							tempBool = false;
+				        	alert(data);
+				        	location.reload();
+				        }*/
+				    },
+				    failure: function(data) { 
+				        alert('Got an error dude');
+				    },
+					dataType: "html"
+			});
+		}
+	</script>
+{% endblock %}
 {% block user %}{{professor.get_name}}{% endblock %}
 {% block name %}{{professor.get_name}}{% endblock %}
 {% block email %}{{professor.get_email}}{% endblock %}
@@ -54,3 +112,28 @@
 </div>
 {% endblock %}
 
+{% block review %}
+	<div class="col-md-offset-5" id="reviewText">
+		<form action="/add/review/" method="POST">{% csrf_token %}
+			<input type="hidden" name="mnemonics" value="ADD_FRESH_REVIEW" >
+			<input type="hidden" name="review_type" value="Fresh Review">
+			<input type="hidden" name="prof_id" value="{{professor.get_username}}">
+			<input type="text"  name="review_text" placeholder = "Add a review" >
+			<input type="submit" value="Add a review" >
+		</form>
+	</div>
+	<div class="col-md-offset-5" id="reviews">
+		<table>
+		{% for review in review_list %}
+		<tr>
+			<td>
+			<b>{{review.get_student.get_username}}({{review.get_timestamp}}) <span id="spnLike{{review.get_student.get_username}}">{{review.get_number_of_likes}}</span> Says:</b><br>
+			{{review.get_review}}
+			<button type="submit" onclick="likes(1,'{{review.get_student.get_username}}','{{review.get_professor.get_username}}')" >Like</button>
+			<button type="submit" onclick="likes(-1,'{{review.get_student.get_username}}','{{review.get_professor.get_username}}')">Dislike</button>
+			</td>
+		</tr>
+		{% endfor %}
+		</table>
+	</div>
+{% endblock %}

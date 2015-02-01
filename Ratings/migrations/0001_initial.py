@@ -14,9 +14,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProfRatings',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
-                ('_number_of_likes', models.BigIntegerField(default=None)),
-                ('_number_of_dislikes', models.BigIntegerField(default=None)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('_number_of_likes', models.BigIntegerField(default=0)),
+                ('_number_of_dislikes', models.BigIntegerField(default=0)),
                 ('_rate', models.FloatField(default=0)),
                 ('_prof', models.ForeignKey(default=None, to='Users.Professor')),
             ],

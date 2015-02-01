@@ -1,12 +1,6 @@
 {% extends "base/base.html" %}
 
-{% block loginBase %}
 
-	<li><a href = "#"> Hello! </a></li>
-	<li><a href = "/home/"> Logout </a></li>
-	
-
-{% endblock %}
 
 {% block content %}
 	<div class="container">
@@ -105,14 +99,9 @@
         </div>
       </div>
     </div>
-
+{% block review %}
+{% endblock %}
 {% endblock %}
 
 {% block js %}
-	<script type="text/javascript">
-		function hide(id){
-			document.getElementById(id).style.display = 'none';
-			document.getElementById(id + 'Text').style.display = 'block';
-		}
-	</script>
 {% endblock %}

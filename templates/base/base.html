@@ -9,7 +9,9 @@
     <!-- Bootstrap -->
     {% load staticfiles %}
     <link href={% static 'base/css/bootstrap.min.css' %} rel="stylesheet">
-
+    <!--JQuery-->
+    {% load staticfiles %}
+    <script src={% static 'jquery-1.11.1.min.js' %}></script>
     <!-- CSS for base.html -->
     <style type="text/css">
       body { padding-top: 50px; }
@@ -100,7 +102,7 @@
             <ul class="nav navbar-nav navbar-right">
 	          {% block loginBase %}
 	          {% if request.session.user_type %}
-	          	<li><a href = "#"> Hello! {{request.session.username}}</a></li>
+	          	<li><a href = "#"> Hello!   {{request.session.username}}</a></li>
 				<li><a href = "/home/"> Logout </a></li>
 	          {% else %}
 	          	<li><a href = "/login/"> Login </a></li>

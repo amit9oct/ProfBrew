@@ -19,6 +19,8 @@ urlpatterns += patterns('Users.views.login.login',
 urlpatterns += patterns('Users.views.caller',
     url(r'^register/student/$','caller'),
     url(r'^caller/$','caller'),
+    url(r'^add/review/$','caller'),
+    url(r'^like/review/$','caller'),
 )
 urlpatterns += patterns('Users.views.register.register',
     url(r'^register/$','register'),
