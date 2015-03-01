@@ -103,7 +103,7 @@
 	          {% block loginBase %}
 	          {% if request.session.user_type %}
 	          	<li><a href = "#"> Hello!   {{request.session.username}}</a></li>
-				<li><a href = "/home/"> Logout </a></li>
+				<li><a href = "/logout/"> Logout </a></li>
 	          {% else %}
 	          	<li><a href = "/login/"> Login </a></li>
 	          	<li><a href = "/register/"> SignUp </a></li>

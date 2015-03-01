@@ -8,7 +8,7 @@ from University.models import College
 from posixpath import _joinrealpath
 
 #Some Important Parameters
-MAX_LEN_OF_USERNAME=15
+MAX_LEN_OF_USERNAME=200
 MAX_LEN_OF_NAME=200
 MAX_LEN_OF_PASSWORD=30
 MAX_LEN_OF_UNIV_NAME=100
@@ -41,18 +41,8 @@ class Prof_Position(models.Model):
 
 class Branch(models.Model):
     _branch_name = models.CharField(max_length=MAX_LEN_OF_BRANCH_NAME,null=True,default=DEFAULT_FIELD_VALUE)
-    _job_satisifaction = models.IntegerField(null=True,default=DEFAULT_FIELD_VALUE)
-    _research_opportunities = models.IntegerField(null=True,default=DEFAULT_FIELD_VALUE)
     def __str__(self):
         return self._branch_name
-    def get_job_satisifaction(self):
-        return self._job_satisifaction
-    def get_research_opportunities(self):
-        return self._research_opportunities
-    def update_job_satisifaction(self,job_satisifaction):
-        self._job_satisifaction = job_satisifaction
-    def update_research_opportunities(self,research_opportunities):
-        self._research_opportunities = research_opportunities
     
 class Users(models.Model):
     """

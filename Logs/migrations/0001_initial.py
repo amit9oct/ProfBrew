@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProfLog',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('_like', models.BooleanField(default=False)),
                 ('_dislike', models.BooleanField(default=False)),
                 ('_dont_know', models.BooleanField(default=False)),

@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'SearchEngine',
     'Reviews',
     'Logs',
+    'survey',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

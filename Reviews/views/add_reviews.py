@@ -7,7 +7,8 @@ from Reviews.models import ProfessorReviews
 from Users.models import Professor, Student
 from django.http.response import HttpResponse
 import Users.views
-from ProfBrew.urls import INTERNAL
+from ProfBrew.urls import INTERNAL, APPLICATION
+import json
 
 FRESH_REVIEW = 1
 EXISTING_REVIEW = 2
@@ -21,6 +22,10 @@ def add_prof_review(request,prof_id,student_id,review_id,review_type,review_text
     student = Student.objects.filter(_username=student_id)[0]
     if review_type == FRESH_REVIEW:
         new_review = ProfessorReviews.objects.create(_professor=prof,_student=student,_review=review_text)
+        if request.session['call_type'] == APPLICATION:
+            response_data= {}
+            response_data['message'] = review_text
+            return HttpResponse(json.dumps(response_data),"application/json")
         request.session['call_type'] = INTERNAL
         request.session['mnemonics'] = 'PROF_PROFILE_VIEW/'+ prof_id
         return Users.views.caller.caller(request)

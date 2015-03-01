@@ -3,6 +3,7 @@ from django.contrib import admin
 
 INTERNAL = 1
 EXTERNAL = 2
+APPLICATION = 3
 CALL_TYPE = {(INTERNAL,'Internal'),(EXTERNAL,'External'),}
 urlpatterns = patterns('',
     # Examples:
@@ -11,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 urlpatterns += patterns('Users.views.home.home',
+    url(r'^$','home'),
     url(r'^home/$', 'home'),
 )
 urlpatterns += patterns('Users.views.login.login',
@@ -27,6 +29,14 @@ urlpatterns += patterns('Users.views.register.register',
 )
 urlpatterns += patterns('SearchEngine.views.search',
     url(r'^search/$', 'search'),
+)
+urlpatterns += patterns('survey.createStudent.createStudent',
+    url(r'^survey_home/','survey_home'),
+    url(r'^survey/','survey'),
+    url(r'^survey_submit','survey_submit'),
+)
+urlpatterns += patterns('Users.views.login.logout',
+    url(r'^logout/$','logout'),
 )
 mnemonics = {
     '/home/':'HOME',

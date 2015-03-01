@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import Users.views
-from ProfBrew.urls import INTERNAL
+import json
+from ProfBrew.urls import INTERNAL, EXTERNAL, APPLICATION
 from Logs.models import ProfLog
 from Users.models import Professor, Student
 from Ratings.views.basic.rate_prof import LIKES, DISLIKES, DONT_KNOW
@@ -66,6 +67,10 @@ def update_log(request,student_id,prof_id,opcode):
             else:
                 prof_log = prof_log_list[0]
                 update_prof_log(request,prof_log,prof_rate_list[0],opcode)
+            if request.session['call_type']==APPLICATION:
+                response_data={}
+                response_data['message'] = prof_rate.__str__()
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
             request.session['call_type'] = INTERNAL
             request.session['mnemonics'] = 'PROF_PROFILE_VIEW/'+prof_id
             return Users.views.caller.caller(request)
