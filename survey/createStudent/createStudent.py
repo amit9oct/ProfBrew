@@ -3,6 +3,7 @@ Created on Mar 1, 2015
 
 @author: Amitayush Thakur
 '''
+from django.core.mail import send_mail
 import Users.views
 from Users.models import Student, Users, Professor, Branch
 from random import randint
@@ -35,7 +36,7 @@ def survey(request):
     prof_list = Professor.objects.filter(_branch=branch,_college=clg)
     context={'college':clg,'branch':branch,'prof_list':prof_list}
     return render(request,'survey/survey.html',context)
-    
+
 def createStudent(request,email,degree,branch):
     raw_username = email.split("@")
     username_base = raw_username[0]
@@ -50,8 +51,13 @@ def createStudent(request,email,degree,branch):
         Student.objects.create(_username = username,_password = password,user_type=Users.STUDENT,name=username,_email=email,_college=clg,_contributing_factor=0,_branch=branch,_degree_pursued=degree,_year=num_year)
         return str(username)+'&'+str(password)
     else:
-        return HttpResponse("Multiple Accounts not allowed!!!")
-    
+
+        msg = 'Multiple Accounts!!!'
+        title = 'Multiple Accounts Not Allowed!!!'
+        otherdata = "<a href='/home/'>Click here to go back!!</a>"
+        context = { 'message':msg , 'otherdata':otherdata,'title':title}
+        return render(request,'error.html',context)
+
 def likeDislike(request,student_id,prof_id,op_code):
     student_list = Student.objects.filter(_username = student_id)
     """
@@ -78,8 +84,13 @@ def addProfReview(request,student_id,prof_id,review_text):
         request.session['call_type'] = APPLICATION
         return add_prof_review(request,prof_id,student_id,None,REVIEW_TYPE['Fresh Review'],review_text)
     else:
-        return HttpResponse("Can't add more than one review using!!!")
-    
+
+        msg = 'Cannot add more than One review!!!!!!!'
+        title = 'More than one review!!!'
+        otherdata = "<a href='/home/'>Click here to go back!!</a>"
+        context = { 'message':msg , 'otherdata':otherdata,'title':title}
+        return render(request,'error.html',context)
+
 def addBranchReview(request,branch_text,student_id,review_id,review_type,review_text):
     student_list = Student.objects.filter(_username = student_id)
     student = student_list[0]
@@ -119,7 +130,11 @@ def survey_submit(request):
         branch = Branch.objects.filter(_branch_name=branch_text)[0]
         student_details = createStudent(request,email,'B Tech',branch).__str__()
         if len(student_details.split('&'))==1 :
-            return HttpResponse("Multiple submissions not allowed!!!")
+            msg = 'Mutliple Submissions Not Allowed!!!'
+            title = 'Multiple Submissions!!!'
+            otherdata = "<a href='/home/'>Click here to go back!!</a>"
+            context = { 'message':msg , 'otherdata':otherdata,'title':title}
+            return render(request,'error.html',context)
         username = student_details.split('&')[0]
         password = student_details.split('&')[1]
         request.session['username'] = username
@@ -127,15 +142,41 @@ def survey_submit(request):
         clg = College.objects.filter(college_name=CLG_NAME)[0]
         prof_list = Professor.objects.filter(_branch=branch,_college=clg)
         for prof in prof_list:
-            likeDislike(request, username, prof.get_username(),request.POST['optradio'+prof.get_username()])
-            addProfReview(request,username,prof.get_username,request.POST['profReview'+prof.get_username()])
-        addBranchReview(request, branch_text, username,None,REVIEW_TYPE['Fresh Review'], request.POST['branchReview'])
-        clgReview(request,username,None,REVIEW_TYPE['Fresh Review'], request.POST['clgReview'])
-        OtherDetails.objects.create(_email=email,_job_satisfaction=request.POST['jobOpp'],_research_avenues=request.POST['resAv'],\
+            if request.POST.get('optradio'+prof.get_username()) !=None:
+                likeDislike(request, username, prof.get_username(),request.POST['optradio'+prof.get_username()])
+            else:
+                likeDislike(request, username, prof.get_username(),'DONT_KNOW')
+            if request.POST['profReview'+prof.get_username()] != '':
+                addProfReview(request,username,prof.get_username,request.POST['profReview'+prof.get_username()])
+        if request.POST['branchReview']!='':
+            addBranchReview(request, branch_text, username,None,REVIEW_TYPE['Fresh Review'], request.POST['branchReview'])
+        if request.POST['clgReview']!='':
+            clgReview(request,username,None,REVIEW_TYPE['Fresh Review'], request.POST['clgReview'])
+        if request.POST.get('optradioJobOpp')!=None and request.POST.get('optResAv')!=None and request.POST.get('optradioClgReview')!=None:
+            OtherDetails.objects.create(_email=email,_job_satisfaction=request.POST['jobOpp'],_research_avenues=request.POST['resAv'],\
                                     _job_satisfaction_rate=request.POST['optradioJobOpp'],\
                                     _research_avenues_rate=request.POST['optradioResAv'],
                                     _college_review_rate=request.POST['optradioClgReview'])
+        else:
+            OtherDetails.objects.create(_email=email,_job_satisfaction=request.POST['jobOpp'],_research_avenues=request.POST['resAv'],\
+                                    _job_satisfaction_rate='DONT_KNOW',\
+                                    _research_avenues_rate='DONT_KNOW',
+                                    _college_review_rate='DONT_KNOW')
+
+        send_mail('ProfBrew:Login Crendential','You have successfully registered on profbrew.com. Your login credentials are Username: '+username+'         Password: '+password, 'mailprofbrew@egmail.com',[email], fail_silently=False)
         logout(request)
-        return HttpResponse("Congrats <a href='/search/?txtSearch=&search_type=Professor'>Click here to view results!!</a>")
+        request.session['user_type'] = 'Visitor'
+        msg = 'CONGRATS!!!'
+        title = 'CONGRATS!!!'
+        otherdata = "Congrats <a href='/search/?txtSearch=&search_type=Professor'>Click here to view results!!</a> <br>  Your account has also been created on our website. <br> Login credential has been mailed to <b> "+email+" </b> .Thank you submit your valuable reviews."
+        context = { 'message':msg , 'otherdata':otherdata,'title':title}
+        return render(request,'error.html',context)
     else:
-        return HttpResponse("Not Accessible this way!!!")
+
+        msg = 'Not Accessible this way!!!'
+        title = 'Illegal Access!!!'
+        otherdata = "<a href='/home/'>Click here to go back!!</a>"
+        context = { 'message':msg , 'otherdata':otherdata,'title':title}
+        return render(request,'error.html',context)
+
+        return HttpResponse("")

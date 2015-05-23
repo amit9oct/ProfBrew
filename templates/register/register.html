@@ -1,7 +1,7 @@
 {% extends "base/base.html" %}
 
 {% block loginBase %}
-	<li><a href = "../login"> Login </a></li>
+	<li><a href = "../login" style="color:#fff;"> Login </a></li>
 {% endblock %}
 {% block js%}
 <!-- Script to check if the username already exists -->
@@ -34,7 +34,7 @@
 								        	location.reload();
 								        }
 								    },
-								    failure: function(data) { 
+								    failure: function(data) {
 								        alert('Got an error dude');
 								    },
   									dataType: "html"
@@ -107,7 +107,7 @@
                         		var branchSelected = null;
                         		if(type==="Student")
                         			branchSelected = document.getElementById('student_branch_select');
-                        		var quantity = branchSelected.options[branchSelected.selectedIndex].value; 
+                        		var quantity = branchSelected.options[branchSelected.selectedIndex].value;
                         		if(quantity === ""){
                         			alert("Select a Branch!!!");
                         			return false;
@@ -147,19 +147,20 @@
                         			checkYearSelected(type))){
                         		   return false;
                         		}
-                        		 
+
                         	}
                         </script>
 {% endblock%}
 {% block content %}
 	<div class="container">
       <div class="row">
-        <div class="col-md-6">
-           <!-- content on left -->
-        </div>
         <!-- Container for Signup -->
-        <div class="col-md-6">
-          <div class="row">
+        <div class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+          	<div class="panel-title">Sign Up</div>
+          </div>
+          <div class="panel-body">
             <div class="col-md-12">
               <!-- Signup tabs -->
               <ul class="nav nav-tabs">
@@ -169,7 +170,7 @@
                 <div class="tab-content">
                   <!-- Student signup -->
                   <div id="student" class="tab-pane fade in active">
-                      <br><br><br> 
+                      <br><br><br>
                       <form action="/register/student/" method="POST" onsubmit="return checkAll('Student')">
                         {% csrf_token %}
                         <input type="hidden" name="mnemonics" value="REGISTER_STUDENT">
@@ -178,10 +179,10 @@
                         </div>
                         <div class="form-group">
                           <div class="row">
-                            <div class="col-md-6">  
+                            <div class="col-md-6">
                               <input type="text" class="form-control" placeholder="First Name" name="fname" id="student_fname">
                             </div>
-                            <div class="col-md-6">  
+                            <div class="col-md-6">
                               <input type="text" class="form-control" placeholder="Last Name" name="lname" id="student_lname">
                             </div>
                           </div>
@@ -219,28 +220,27 @@
                         	  {% endfor %}
                         	</select>
                         </div>
-                        <div class="form-group">  
-                          <button type="submit" class="btn btn-info">Sign up</button>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary">Sign up</button>
                         </div>
                       </form>
-                      <br>
                   </div>
                   <!-- Professor signup -->
                   <div id="professor" class="tab-pane fade">
-                      <br><br><br> 
-                      
+                      <br><br><br>
+
                       <form action="/register/professor" method="POST" onsubmit="return checkAll('Professor')">
-                        
+
                         {% csrf_token %}
                         <div class="form-group">
                           <input type="text" class="form-control" placeholder="Username" name="username" id="professor_username" onchange="checkUsername('Professor')">
                         </div>
                         <div class="form-group">
                           <div class="row">
-                            <div class="col-md-6">  
+                            <div class="col-md-6">
                               <input type="text" class="form-control" placeholder="First Name" name="fname" id="professor_fname">
                             </div>
-                            <div class="col-md-6">  
+                            <div class="col-md-6">
                               <input type="text" class="form-control" placeholder="Last Name" name="lname" id="professor_lname">
                             </div>
                           </div>
@@ -270,24 +270,24 @@
                         	  {% endfor %}
                         	</select>
                         </div>
-                        
-                        <div class="form-group"> 
+
+                        <div class="form-group">
                           <input type="text" class="form-control" placeholder="Best Known For" name="best_known_for" id="professor_known_for">
                         </div>
                         <div class="form-group">
                           <input type="text" class="form-control" placeholder="Popular Name" name="popular_name" id="professor_popular_name">
                         </div>
-                        <div class="form-group">  
-                          <button type="submit" class="btn btn-info">Sign up</button>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary">Sign up</button>
                         </div>
                       </form>
-                      <br>          
                   </div>
-                </div><!-- Tab content ends -->               
-              </ul><!-- Signup tabs ends -->             
+                </div><!-- Tab content ends -->
+              </ul><!-- Signup tabs ends -->
             </div>
           </div>
         </div><!-- Container for signup ends -->
+        </div>
       </div>
     </div>
 {% endblock %}

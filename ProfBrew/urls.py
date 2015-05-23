@@ -5,6 +5,8 @@ INTERNAL = 1
 EXTERNAL = 2
 APPLICATION = 3
 CALL_TYPE = {(INTERNAL,'Internal'),(EXTERNAL,'External'),}
+handler404 = 'Users.views.home.home.error404'
+handler500 = 'Users.views.home.home.error500'
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'ProfBrew.views.home', name='home'),
@@ -14,6 +16,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('Users.views.home.home',
     url(r'^$','home'),
     url(r'^home/$', 'home'),
+    url(r'^TermsAndConditions/$','terms_and_conditions'),
 )
 urlpatterns += patterns('Users.views.login.login',
     url(r'^login/$','login'),
@@ -27,8 +30,16 @@ urlpatterns += patterns('Users.views.caller',
 urlpatterns += patterns('Users.views.register.register',
     url(r'^register/$','register'),
 )
+urlpatterns += patterns('Users.views.register.filldb',
+    url(r'^filldb/$','insertIntoDatabase'),
+)
 urlpatterns += patterns('SearchEngine.views.search',
     url(r'^search/$', 'search'),
+    url(r'^searchBranch/$','branch_search'),
+    url(r'^branch_load/$','load_branch'),
+)
+urlpatterns += patterns('SearchEngine.views.prof_profile',
+    url(r'^prof_profile/$','prof_profile'),
 )
 urlpatterns += patterns('survey.createStudent.createStudent',
     url(r'^survey_home/','survey_home'),
@@ -37,6 +48,9 @@ urlpatterns += patterns('survey.createStudent.createStudent',
 )
 urlpatterns += patterns('Users.views.login.logout',
     url(r'^logout/$','logout'),
+)
+urlpatterns += patterns('Ratings.views.basic.add_all_profs',
+    url(r'^add_all_profs/$','add_all_profs'),
 )
 mnemonics = {
     '/home/':'HOME',

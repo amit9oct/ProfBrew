@@ -1,0 +1,105 @@
+{% extends "base/base.html" %}
+
+{% block css %}
+	<style type="text/css">
+		.push-right{
+			float: right;
+		}
+	</style>
+{% endblock %}
+{% block js %}
+ <script type="text/javascript">
+ 	function rate_prof(opcode,prof_id){
+ 		$.ajax({
+					type: "POST",
+					url: "/caller/",
+					data: {
+						mnemonics : opcode,
+						prof_id : prof_id,
+						csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+					success: function(data) {
+						/*if(data!=="False"){
+							tempBool = false;
+				        	alert(data);
+				        	location.reload();
+				        }*/
+				    },
+				    failure: function(data) { 
+				        alert('Got an error dude');
+				    },
+					dataType: "html"
+		});
+ 	}
+ </script>
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="left-buffer">
+        <div class="row">
+          <div class="col-sm-7">
+            <div class="row">
+              <div class="col-sm-6">
+                <!-- Results found -->
+                <p class="text-muted">
+                  Website search ({{number_of_search_result}} matches)
+                </p>
+              </div>
+              <div class="col-sm-6">
+                <!-- Sort by -->
+                <ul class="list-inline push-right">
+                  <li>Sort by:</li> 
+                  <li class="active"><a href="#">relevance</a></li>
+                  <li><a href="#">date</a></li>
+                  <li><a href="#">rating</a></li>
+                </ul>
+              </div>
+            </div>
+
+
+            <!-- Search results links -->
+            {% for prof_rate in prof_rate_list %}
+				<div class="panel panel-primary">
+				  <div class="panel-heading"  name="Professor" value={{prof_rate.get_prof.get_username}}>{{prof_rate.get_prof.get_name}}</div>
+				  <div class="panel-body">
+				    {{prof_rate.get_rate}}
+				    {% if request.session.user_type == 'Student' %}
+				    <div class="col-md-offset-5" id = "rateButtonText" style="display:block">
+					<form action = "/caller/" method = "POST">{% csrf_token %}
+						<button type="submit" class="btn btn-info" onclick="rate_prof('LIKE',{{prof_rate.get_prof.get_username}})">Like</button>
+						<input type = "hidden" name = "mnemonics" value = "LIKE">
+						<input type = "hidden" name = "prof_id" value = "{{prof_rate.get_prof.get_username}}">
+					</form>
+					<form action = "/caller/" method = "POST">{% csrf_token %}
+						<button type="submit" class="btn btn-info" onclick="rate_prof('DISLIKE',{{prof_rate.get_prof.get_username}})">Dislike</button>
+						<input type = "hidden" name = "mnemonics" value = "DISLIKE">
+						<input type = "hidden" name = "prof_id" value = "{{prof_rate.get_prof.get_username}}">
+					</form>
+					<form action = "/caller/" method = "POST">{% csrf_token %}
+						<button type="submit" class="btn btn-info" onclick="rate_prof('DONT_KNOW',{{prof_rate.get_prof.get_username}})">Don't know</button>
+						<input type = "hidden" name = "mnemonics" value = "DONT_KNOW">
+						<input type = "hidden" name = "prof_id" value = "{{prof_rate.get_prof.get_username}}">
+					</form>
+					</div>
+					{% endif %}
+				  </div>
+				</div>
+              {% endfor %}
+
+
+            <!-- Pagination -->
+            <ul class="pagination">
+              <li><a href="#"><<</a></li>
+              <li class="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#">>></a></li>
+            </ul>
+          </div>
+        </div> <!-- / .row -->
+      </div>
+{% endblock %}

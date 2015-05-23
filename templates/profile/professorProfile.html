@@ -1,5 +1,24 @@
 {% extends "profile/profile.html" %}
 {% block js %}
+	{% load staticfiles %}
+    <script src={% static 'jquery-1.11.1.min.js' %}></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+            $('textarea').keyup(function (event) {
+                if (event.keyCode == 13) {
+                    var content = this.value;
+                    var caret = getCaret(this);
+                    if(event.shiftKey){
+                        this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
+                        event.stopPropagation();
+                    } else {
+                        this.value = content.substring(0, caret - 1) + content.substring(caret, content.length);
+                        $('form').submit();
+                    }
+                }
+            });
+    	}
+    </script>
 	<script type="text/javascript">
 		function hide(id){
 			document.getElementById(id).style.display = 'none';
@@ -24,7 +43,7 @@
 				        	location.reload();
 				        }*/
 				    },
-				    failure: function(data) { 
+				    failure: function(data) {
 				        alert('Got an error dude');
 				    },
 					dataType: "html"
@@ -49,7 +68,7 @@
 				        	location.reload();
 				        }*/
 				    },
-				    failure: function(data) { 
+				    failure: function(data) {
 				        alert('Got an error dude');
 				    },
 					dataType: "html"
@@ -62,7 +81,7 @@
 {% block email %}{{professor.get_email}}{% endblock %}
 {% block phone %}{{professor.get_mobile_number}}{% endblock %}
 {% block college %}{{professor.get_college}}{% endblock %}
-{% block details %} 
+{% block details %}
 <tr>
 	<td>Areas of Interest</td>
     <td>{{professor.get_area_of_interest}}</td>
@@ -107,18 +126,19 @@
 		<input type = "hidden" name = "prof_id" value = "{{professor.get_username}}">
 	</form>
 </div>
-<div id = "rateButton" class="col-md-offset-8">	
-	<button type="button" class="btn btn-primary" onclick="hide('rateButton')">Rate this Prof</button>	
+<div id = "rateButton" class="col-md-offset-8">
+	<button type="button" class="btn btn-primary" onclick="hide('rateButton')">Rate this Prof</button>
 </div>
 {% endblock %}
 
 {% block review %}
-	<div class="col-md-offset-5" id="reviewText">
+	<div class="col-md-offset-5" id="reviewText" align = "center">
 		<form action="/add/review/" method="POST">{% csrf_token %}
 			<input type="hidden" name="mnemonics" value="ADD_FRESH_REVIEW" >
 			<input type="hidden" name="review_type" value="Fresh Review">
 			<input type="hidden" name="prof_id" value="{{professor.get_username}}">
-			<input type="text"  name="review_text" placeholder = "Add a review" >
+		<!--	<input type="text"  name="review_text" placeholder = "Add a review" >-->
+			<textarea rows="4" cols="50"class = "form-control" name="review_text" placeholder = "Add a review"></textarea>
 			<input type="submit" value="Add a review" >
 		</form>
 	</div>

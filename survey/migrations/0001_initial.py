@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OtherDetails',
             fields=[
-                ('_email', models.EmailField(primary_key=True, default=None, max_length=75, serialize=False)),
+                ('_email', models.EmailField(serialize=False, default=None, primary_key=True, max_length=75)),
                 ('_job_satisfaction', models.CharField(max_length=2000)),
                 ('_research_avenues', models.CharField(max_length=2000)),
                 ('_job_satisfaction_rate', models.CharField(max_length=10)),

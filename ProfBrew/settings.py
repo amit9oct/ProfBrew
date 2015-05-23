@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '(3jk&-^!oog46g*sq4_s-&h&&36wqo$#82(vgaj+8(k9f7w^+0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'ProfBrew.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'profbrew',
-        'USER':'root',
+        'NAME': 'profbrew$profbrew',
+        'USER':'profbrew',
         'PASSWORD':'MyNewPass',
+        'HOST' : 'mysql.server',
     }
 }
-
 """
 DATABASES = {
     'default': {
@@ -114,7 +114,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/profbrew/ProfBrew/static/' #os.path.join(BASE_DIR, "")
+# STATICFILES_DIRS=(
+#         os.path.join(BASE_DIR,""),
+# )
 
-STATICFILES_DIRS=(
-        os.path.join(BASE_DIR,"templates"),
-)
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "mailprofbrew@gmail.com"
+EMAIL_HOST_PASSWORD = 'smiley1807'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

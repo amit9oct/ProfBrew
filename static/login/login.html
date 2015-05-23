@@ -1,0 +1,67 @@
+{% extends "base/base.html" %}
+
+{% block css %}
+	<style type="text/css">
+		.mylabel{
+			color: #428BCA;
+		}
+	</style>
+{% endblock %}
+
+
+{% block loginBase %}
+	<li><a href = "/register/"> SignUp </a></li>
+{% endblock %}
+
+
+
+
+{% block content %}
+	<div class="container">
+      <div class="row">
+        <div class="col-md-6">
+           <!-- content on left -->
+        </div>
+        <!-- Container for login -->
+        <div class=" col-md-5">
+          <form class="form-horizontal" id="login" action="/caller/" method="POST"> {% csrf_token %}
+          	<input type="hidden" name="mnemonics" value="VERIFY_CRED"/>
+          	<div class="col-sm-9">
+			      <select class="form-control" placeholder="User Type" name="user_type" id="user_type">
+                    <option value="Student">Student</option>
+                  	<option value="Professor">Professor</option>
+                  </select>
+			    </div><br>
+			  <div class="form-group">
+			    <label for="inputEmail3" class="col-sm-3 control-label mylabel">User Name</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" id="username" placeholder="User Name" name="username">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label mylabel">Password</label>
+			    <div class="col-sm-9">
+			      <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <div class="checkbox">
+			        <label>
+			          <input type="checkbox"> Remember me
+			        </label>
+			      </div>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <button type="submit" class="btn btn-default">Sign in</button>
+			    </div>
+			  </div>
+			</form>
+        </div><!-- Container for login ends -->
+      </div>
+    </div>
+
+{% endblock %}
+
