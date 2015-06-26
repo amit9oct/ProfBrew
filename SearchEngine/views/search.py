@@ -8,6 +8,7 @@ from django.shortcuts import render
 def search(request):
     raw_text_by_user = request.GET['txtSearch']
     search_type = request.GET['search_type']
+    request.session['last_url'] = '/search/?txtSearch='+raw_text_by_user+'&search_type=Professor'
     if search_type == 'Professor':
         prof_list = Professor.objects.filter(name__icontains = raw_text_by_user)
         len_of_prof_list = len(prof_list)

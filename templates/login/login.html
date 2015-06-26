@@ -1,73 +1,40 @@
-{% extends "base/base.html" %}
-
+{% extends "base/index.html" %}
+{% block title %} Profbrew - Login {% endblock %}
 {% block css %}
-	<style type="text/css">
-		.mylabel{
-			color: #777;
-		}
-	</style>
 {% endblock %}
-
-
-{% block loginBase %}
-	<li><a href = "/register/" style="color:#fff;"> SignUp </a></li>
+{% block js %}
 {% endblock %}
 
 
 {% block content %}
-	<div class="container">
-      <div class="row">
-        <!-- Container for login -->
-        <div class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <div class="panel panel-primary" >
-                    <div class="panel-heading">
-                        <div class="panel-title">Sign In</div>
-                    </div>
-                    <div style="padding-top:30px" class="panel-body" >
-                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                        <form class="form-horizontal" id="login" action="/caller/" method="POST"> {% csrf_token %}
-				          	<input type="hidden" name="mnemonics" value="VERIFY_CRED"/>
-				          	  <div class="form-group">
-							      <p for="inputEmail3" class="col-sm-3 control-label mylabel">User Type</p>
-							      <div class="col-sm-9">
-							      	<select class="form-control" placeholder="User Type" name="user_type" id="user_type">
-					                    <option value="Student">Student</option>
-					                  	<option value="Professor">Professor</option>
-					                  </select>
-							      </div>
-							  </div>
-							  <div class="form-group">
-							    <p for="inputEmail3" class="col-sm-3 control-label mylabel">User Name</p>
-							    <div class="col-sm-9">
-							      <input type="text" class="form-control" id="username" placeholder="User Name" name="username">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <p for="inputPassword3" class="col-sm-3 control-label mylabel">Password</p>
-							    <div class="col-sm-9">
-							      <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <div class="col-sm-offset-3 col-sm-9">
-							      <div class="checkbox">
-							        <label>
-							          <input type="checkbox"> Remember me
-							        </label>
-							      </div>
-							    </div>
-							  </div>
-							  <div class="form-group">
-							    <div class="col-sm-offset-3 col-sm-9">
-							      <button type="submit" class="btn btn-primary">Sign in</button>
-							    </div>
-							  </div>
-							</form>
-                        </div>
-                    </div>
+    <div class="container">
+
+      <form class="login-form"id="login" action="/myprofile/" method="POST"> {% csrf_token %}        
+        <input type="hidden" name="mnemonics" value="VERIFY_CRED">
+        <div class="login-wrap">
+            <p class="login-img"><i class="icon_lock_alt"></i></p>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="icon_profile"></i></span>
+              <input type="text" class="form-control" placeholder="Username" name="username" autofocus>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+            <select class="form-control input-lg m-bot15" name="user_type">
+                <option value="Student">Student</option>
+                <option value="Professor">Professor</option>
+            </select>
+              
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+                <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
+            </label>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+            <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>
         </div>
+      </form>
 
-        </div><!-- Container for login ends -->
-      </div>
+    </div>  
+
 {% endblock %}
-

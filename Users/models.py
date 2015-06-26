@@ -167,7 +167,7 @@ class Professor(Users):
     def get_number_of_qualifications(self):
         return self._qualifications.count()
     def get_university(self):
-        return self._unversity
+        return self._university
     def get_college(self):
         return self._college
     def get_popular_name(self):

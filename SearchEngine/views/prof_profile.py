@@ -6,4 +6,5 @@ from Users.views.profile.profile import profile_of_prof
 
 def prof_profile(request):
     prof_id = request.GET['prof']
+    request.session['last_url'] = '/prof_profile/?prof='+prof_id
     return profile_of_prof(request,prof_id,None)

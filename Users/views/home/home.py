@@ -1,13 +1,20 @@
 from django.shortcuts import render_to_response,render
 from django.http import HttpResponse
 from ProfBrew.urls import EXTERNAL
+from addedFeatures.profs import get_top_prof_rate
+from addedFeatures.reviews import get_most_liked_review
 
 
 def home(request):
     request.session['last_url'] = '/home/'
     request.session['call_type'] = EXTERNAL
-    request.session['user_type'] = 'Visitor'
-    return render_to_response("home/home.html")
+    temp = request.session.get('user_type',None)
+    if temp != 'Student' and temp != 'Professor':
+        request.session['user_type'] = 'Visitor'
+    top_prof_rate = get_top_prof_rate()
+    top_review_list = get_most_liked_review()
+    context = {'top_prof':top_prof_rate.get_prof, 'top_prof_rate':top_prof_rate, 'top_review_list':top_review_list}
+    return render(request,"home/home.html",context)
 
 def search(request):
     return render(request,'search/home.html')

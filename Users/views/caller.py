@@ -1,7 +1,7 @@
 '''
 Created on Jan 10, 2015
 
-@author: Amitayush Thakur,Sagar Grover and Abhimanyu Siwach
+@author: Amitayush Thakur
 '''
 from Users.views.login.login import login
 from Users.views.login.login import verify_credentials
@@ -84,12 +84,25 @@ def caller(request):
         opcode = array[1]
         return rate_prof(request,prof_id,opcode)  #to be changed later
     if mnemonics == 'ADD_FRESH_REVIEW':
+        user_type = request.session.get('user_type',None)
+        if user_type != 'Student':
+            request.session['call_type'] = INTERNAL
+            msg = 'Visitor cannot add review!!!'
+            title = 'Cannot Add review!!!'
+            otherdata = "<a href='/login/'>Login or signup to add a review. Click here to go login or signup!!</a>"
+            context = { 'message':msg , 'otherdata':otherdata,'title':title}
+            return render(request,'error.html',context)
         student_id = request.session['username']
         prof_id = request.POST['prof_id']
         review_type = request.POST['review_type']
         review_text = request.POST['review_text']
-        return add_prof_review(request,prof_id,student_id,None,REVIEW_TYPE['Fresh Review'],review_text)
+        return add_prof_review(request,prof_id,student_id,None,REVIEW_TYPE[mnemonics],review_text)
     if mnemonics == 'ADD_REVIEW':
+        if not 'username' in request.session:
+            request.session['call_type'] = INTERNAL
+            otherdata = "<a href='/login/'>Login or signup to add a review. Click here to go login or signup!!</a>"
+            context = { 'message':msg , 'otherdata':otherdata,'title':title}
+            return render(request,'error.html',context)
         student_id = request.session['username']
         prof_id = request.POST['prof_id']
         review_type = REVIEW_TYPE[request.POST['review_type']]
@@ -99,10 +112,14 @@ def caller(request):
     if mnemonics == 'LIKE_PROF_REVIEW':
         student_id = request.POST['student_id']
         prof_id = request.POST['prof_id']
+        date_time = request.POST['time_stamp']
         student = Student.objects.filter(_username=student_id)
         prof = Professor.objects.filter(_username=prof_id)
         review_list = ProfessorReviews.objects.filter(_student=student[0],_professor=prof[0])
         review = review_list[0]
+        for rev in review_list:
+            if rev.get_timestamp() == date_time:
+                review = rev
         factor = request.POST['factor']
         return like_prof_review(request,review,factor)
     return HttpResponse(str(call_type)+' '+str(mnemonics))
