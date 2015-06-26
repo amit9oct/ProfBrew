@@ -20,11 +20,12 @@ urlpatterns += patterns('Users.views.home.home',
 )
 urlpatterns += patterns('Users.views.login.login',
     url(r'^login/$','login'),
+    url(r'^myprofile/$','load_editable_profile'),
+    url(r'^myaccount/$','load_editable_profile_after_session'),
 )
 urlpatterns += patterns('Users.views.caller',
     url(r'^register/student/$','caller'),
     url(r'^caller/$','caller'),
-    url(r'^add/review/$','caller'),
     url(r'^like/review/$','caller'),
 )
 urlpatterns += patterns('Users.views.register.register',
@@ -32,6 +33,13 @@ urlpatterns += patterns('Users.views.register.register',
 )
 urlpatterns += patterns('Users.views.register.filldb',
     url(r'^filldb/$','insertIntoDatabase'),
+)
+urlpatterns += patterns('Reviews.views.add_reviews',
+    url(r'^fresh/review/$','prof_review'),
+    url(r'^add/review/$','add_fresh_review'),
+)
+urlpatterns += patterns('Reviews.views.likes',
+    url(r'^likes/review/$','likes')
 )
 urlpatterns += patterns('SearchEngine.views.search',
     url(r'^search/$', 'search'),
@@ -46,11 +54,17 @@ urlpatterns += patterns('survey.createStudent.createStudent',
     url(r'^survey/','survey'),
     url(r'^survey_submit','survey_submit'),
 )
+urlpatterns += patterns('Users.views.profile.profile',
+    url(r'^profile/$','get_profile'),
+)
 urlpatterns += patterns('Users.views.login.logout',
     url(r'^logout/$','logout'),
 )
 urlpatterns += patterns('Ratings.views.basic.add_all_profs',
     url(r'^add_all_profs/$','add_all_profs'),
+)
+urlpatterns += patterns('Ratings.views.basic.rate_prof',
+    url(r'^rate/$','rate'),
 )
 mnemonics = {
     '/home/':'HOME',
