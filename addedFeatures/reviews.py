@@ -10,7 +10,7 @@ def get_most_liked_review():
     max_like_review_list = []
     for review in all_reviews:
         max_like_review_list.append(review)
-    max_like_review_list.sort(key=lambda x: x.get_number_of_likes(), reverse=False)
+    max_like_review_list.sort(key=lambda x: x.get_number_of_likes(), reverse=True)
     i = 0
     top_4_list = []
     for review in max_like_review_list:

@@ -20,7 +20,8 @@ def search(request):
             i += 1
         prof_rate_complete_list.sort(key=lambda x: x.get_rate(), reverse=True)
         count = len(prof_rate_complete_list)
-        context = {'prof_rate_list': prof_rate_complete_list,'number_of_search_result': count}
+        branch_list = Branch.objects.all()
+        context = {'prof_rate_list': prof_rate_complete_list,'number_of_search_result': count,'branch_list':branch_list}
         return render(request,'search/home.html',context)
 
 def branch_search(request):
@@ -36,7 +37,8 @@ def branch_search(request):
         i += 1
     prof_rate_complete_list.sort(key=lambda x: x.get_rate(), reverse=True)
     count = len(prof_rate_complete_list)
-    context = {'prof_rate_list': prof_rate_complete_list,'number_of_search_result': count}
+    branch_list = Branch.objects.all()
+    context = {'prof_rate_list': prof_rate_complete_list,'number_of_search_result': count,'branch_list':branch_list}
     return render(request,'search/home.html',context)
 
 def load_branch(request):

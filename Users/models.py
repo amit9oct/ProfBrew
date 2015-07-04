@@ -32,7 +32,7 @@ class Qualification_Type(models.Model):
     qualification_name = models.CharField(max_length=MAX_LEN_OF_PROF_QUALIFICATION,default=DEFAULT_FIELD_VALUE)
     def __str__(self):
         return self.qualification_name
-    
+
 class Prof_Position(models.Model):
     priority=models.BigIntegerField(null=True)
     position_name = models.CharField(max_length=MAX_LEN_OF_DEG_NAME,default=DEFAULT_FIELD_VALUE)
@@ -43,10 +43,10 @@ class Branch(models.Model):
     _branch_name = models.CharField(max_length=MAX_LEN_OF_BRANCH_NAME,null=True,default=DEFAULT_FIELD_VALUE)
     def __str__(self):
         return self._branch_name
-    
+
 class Users(models.Model):
     """
-        Users()- Extends Django's pre-implimented User class. 
+        Users()- Extends Django's pre-implimented User class.
         The User class is meant for storing the details of the users into database and keep track of the users.
             _username -> private field and is the primary key.
             name -> has the name of the person. It is public.
@@ -100,13 +100,13 @@ class Users(models.Model):
         self.user_type=user_type
     class Meta:
         abstract=True;
-        
+
 class Student(Users):
     """
         Student()- Extends Users(). It represents the student community.
-        The database has some new fields like credibility which depends on how much student 
+        The database has some new fields like credibility which depends on how much student
         contributes in ratings.
-        We can add a fields like "Discipline" and "Degree Being Pursued"  
+        We can add a fields like "Discipline" and "Degree Being Pursued"
             _conributing_factor -> is the measure of student's contribution in updating website info.
                                    It is calculated using a an algorithm.
             _degree_persued -> is the name of the degree being pursued by the student.
@@ -129,13 +129,17 @@ class Student(Users):
     def get_degree_pursued(self):
         return self._degree_pursued
     def get_year(self):
-        return Student.YEAR_TYPE[self._year][1]        
+        return Student.YEAR_TYPE[self._year][1]
     def get_contributing_factor(self):
         return self._contributing_factor
     def get_university(self):
         return self.unversity
     def get_college(self):
         return self._college
+    def get_branch(self):
+        return self._branch
+    def get_password(self):
+        return self._password
     def update_contributing_factor(self,contributing_factor):
         self._contributing_factor=contributing_factor
     def update_university(self,university):
@@ -146,11 +150,11 @@ class Student(Users):
         self._year = year
     def update_degree_pursued(self,degree_pursued):
         self._degree_pursued = degree_pursued
-      
+
 class Professor(Users):
     """
         Professor()- Extends Users(). It represents the professors of various colleges.
-        The database has some new fields like ratings which depends on the overall performance of the 
+        The database has some new fields like ratings which depends on the overall performance of the
         professor and the way he is rated by the students of the respective college.
             _ratings -> has the compact rating of the professor
     """
@@ -184,6 +188,8 @@ class Professor(Users):
         return self._qualifications
     def get_position(self):
         return self._position
+    def get_branch(self):
+        return self._branch
     def update_position(self,position):
         self._position=position
     def update_qualifications(self,qualifications):

@@ -42,10 +42,10 @@ def createStudent(request,email,degree,branch):
     username_base = raw_username[0]
     email_base = raw_username[1].split(".")
     email_domain = email_base[0]
-    username = username_base + email_domain
+    username = request.POST['student_username']
     user_count = Student.objects.filter(_username=username).count()
     if user_count == 0:
-        password =  username + str(randint(0,1000000))
+        password =  request.POST['password']
         num_year = DEFAULT_YEAR
         clg = College.objects.filter(college_name=CLG_NAME)[0]
         Student.objects.create(_username = username,_password = password,user_type=Users.STUDENT,name=username,_email=email,_college=clg,_contributing_factor=0,_branch=branch,_degree_pursued=degree,_year=num_year)
@@ -82,7 +82,7 @@ def addProfReview(request,student_id,prof_id,review_text):
     if len(student_list) == 1:
         request.session['username'] = student_id
         request.session['call_type'] = APPLICATION
-        return add_prof_review(request,prof_id,student_id,None,REVIEW_TYPE['Fresh Review'],review_text)
+        return add_prof_review(request,prof_id,student_id,None,REVIEW_TYPE['ADD_FRESH_REVIEW'],review_text)
     else:
 
         msg = 'Cannot add more than One review!!!!!!!'
@@ -126,8 +126,15 @@ def clgReview(request,student_id,review_id,review_type,review_text):
 def survey_submit(request):
     if request.method == 'POST':
         email = request.POST['email']
-        branch_text = request.POST['branch']
+        branch_text = request.POST.get('branch','No Branch')
         branch = Branch.objects.filter(_branch_name=branch_text)[0]
+        if len(email.split('@'))==1 or request.POST['student_username'].split(' ')[0]=='' or request.POST['password'].split(' ')[0]=='':
+            msg = 'Must enter a valid username, email and password to register!!!'
+            title = 'Illegal Access!!!'
+            otherdata = "<a href='/survey_home/'>Click here to go back!!</a>"
+            context = { 'message':msg , 'otherdata':otherdata,'title':title}
+            return render(request,'error.html',context)
+
         student_details = createStudent(request,email,'B Tech',branch).__str__()
         if len(student_details.split('&'))==1 :
             msg = 'Mutliple Submissions Not Allowed!!!'
@@ -148,10 +155,10 @@ def survey_submit(request):
                 likeDislike(request, username, prof.get_username(),'DONT_KNOW')
             if request.POST['profReview'+prof.get_username()] != '':
                 addProfReview(request,username,prof.get_username,request.POST['profReview'+prof.get_username()])
-        if request.POST['branchReview']!='':
-            addBranchReview(request, branch_text, username,None,REVIEW_TYPE['Fresh Review'], request.POST['branchReview'])
-        if request.POST['clgReview']!='':
-            clgReview(request,username,None,REVIEW_TYPE['Fresh Review'], request.POST['clgReview'])
+        """if request.POST['branchReview']!='':
+            addBranchReview(request, branch_text, username,None,REVIEW_TYPE['Fresh Review'], request.POST['branchReview'])"""
+        """if request.POST['clgReview']!='':
+            clgReview(request,username,None,REVIEW_TYPE['Fresh Review'], request.POST['clgReview'])"""
         if request.POST.get('optradioJobOpp')!=None and request.POST.get('optResAv')!=None and request.POST.get('optradioClgReview')!=None:
             OtherDetails.objects.create(_email=email,_job_satisfaction=request.POST['jobOpp'],_research_avenues=request.POST['resAv'],\
                                     _job_satisfaction_rate=request.POST['optradioJobOpp'],\

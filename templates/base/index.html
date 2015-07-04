@@ -10,7 +10,7 @@
 
     <title>{% block title %}ProfBrew{% endblock %}</title>
 
-    <!-- Bootstrap CSS -->    
+    <!-- Bootstrap CSS -->
     {% load staticfiles %}
     <link href={% static "base/css/bootstrap.min.css" %} rel="stylesheet"/>
     <!-- bootstrap theme -->
@@ -18,7 +18,7 @@
     <!--external css-->
     <!-- font icon -->
     <link href={% static "base/css/elegant-icons-style.css"%} rel="stylesheet" />
-    <link href={% static "base/css/font-awesome.min.css" %} rel="stylesheet" />    
+    <link href={% static "base/css/font-awesome.min.css" %} rel="stylesheet" />
     <!-- full calendar css-->
     <link href={% static "base/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"%} rel="stylesheet" />
 	<link href={% static "base/assets/fullcalendar/fullcalendar/fullcalendar.css"%} rel="stylesheet" />
@@ -29,10 +29,10 @@
 	<link href={% static "base/css/jquery-jvectormap-1.2.2.css"%} rel="stylesheet">
     <!-- Custom styles -->
 	<link rel={% static "base/stylesheet" href="css/fullcalendar.css"%}>
-	<link href={% static "base/css/widgets.css"%} rel="stylesheet">
+	<link href={% static "base/css/widgets.css" %} rel="stylesheet">
     <link href={% static "base/css/style.css" %} rel="stylesheet">
     <link href={% static "base/css/style-responsive.css" %} rel="stylesheet" />
-	<link href={% static "base/css/xcharts.min.css" %} rel=" stylesheet">	
+	<link href={% static "base/css/xcharts.min.css" %} rel=" stylesheet">
 	<link href={% static "base/css/jquery-ui-1.10.4.min.css" %} rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -47,8 +47,8 @@
   <body>
   <!-- container section start -->
   <section id="container" class="">
-     
-      
+
+
       <header class="header dark-bg" style = "background-color:#000;">
             <div class="toggle-nav">
                 <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
@@ -60,21 +60,21 @@
 
             <div class="nav search-row" id="top_menu">
                 <!--  search form start -->
-                <ul class="nav top-menu">                    
+                <ul class="nav top-menu">
                     <li>
                         <form class="navbar-form" action="/search/">
                             <input class="form-control" placeholder="Search Profs" type="text" name = "txtSearch">
                             <button class="btn btn-info" type = "submit" style = "height:29px" name="search_type" value="Professor"><b>Go</b></button>
                         </form>
-                    </li>                    
+                    </li>
                 </ul>
-                <!--  search form end -->                
+                <!--  search form end -->
             </div>
 
-            <div class="top-nav notification-row">                
+            <div class="top-nav notification-row">
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
-                    
+
                     <!-- user login dropdown start-->
                     <li class="dropdown" >
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -99,14 +99,14 @@
                 </ul>
                 <!-- notificatoin dropdown end-->
             </div>
-      </header>      
+      </header>
       <!--header end-->
 
       <!--sidebar start-->
       <aside>
           <div id="sidebar"  class="nav-collapse " style = "background-color:#CCCCCC; font-color:#000;">
               <!-- sidebar menu start-->
-              <ul class="sidebar-menu" style = "color:#394A59;">                
+              <ul class="sidebar-menu" style = "color:#394A59;">
                   <li class="active">
                       <a class="" href="/home/">
                           <i class="icon_house_alt"></i>
@@ -116,30 +116,33 @@
 				  <li class="sub-menu">
                       <a href="javascript:;" class="" style = "color:#000;">
                           <i class="icon_document_alt"></i>
-                          <span>BITS Pilani</span>
+                          <span>BITS Pilani profs</span>
                           <span class="menu-arrow arrow_carrot-right" style = "color:#fff;"></span>
                       </a>
                       <ul class="sub">
-                          <li><a class="" href="/searchBranch/?branch=Computer Science">Computer Science</a></li>                          
-                          <li><a class="" href="Electrical and Electronics">EEE</a></li>
-                          <li><a class="" href="">EnI</a></li>
-                          <li><a class="" href="">Chemical</a></li>
-                          <li><a class="" href="">Civil</a></li>
-                          <li><a class="" href="">Mechanical</a></li>
+                          {% for branch in branch_list%}
+                          <li><a class="" href="/searchBranch/?branch={{branch}}">{{branch}}</a></li>
+                          {% endfor %}
                       </ul>
                   </li>
-                  <li >
-                      {% if request.session.uuser_type == 'Student'  %}
-                      <!-- <a class="" href="#" style = "color:#000;"> -->
+                  <li>
+                      {% if request.session.user_type == 'Student'  %}
+                      <a class="" href="/myaccount/" style = "color:#000;">
                           <i class="icon_profile"></i>
                           <span>My Profile</span>
-                          <a href="/logout/"><span>Logout</span></a>
-                      <!--</a>-->
+                      </a>
                       {% else %}
                       <a class="" href="/login/" style = "color:#000;">
                           <i class="icon_profile"></i>
                           <span>Login or Sign up!</span>
-                          
+                      </a>
+                      {% endif %}
+                  </li>
+                  <li >
+                      {% if request.session.user_type == 'Student'  %}
+                      <a class="" href="/logout/" style = "color:#000;">
+                          <i class="icon_key_alt"></i>
+                          <span>Logout</span>
                       </a>
                       {% endif %}
                   </li>
@@ -148,7 +151,7 @@
           </div>
       </aside>
       <!--sidebar end-->
-      
+
       <!--main content start-->
       {% block content %}{% endblock %}
       <!--main content end-->
@@ -180,7 +183,7 @@
     <!-- custom select -->
     <script src={% static "base/js/jquery.customSelect.min.js" %} ></script>
 	<script src={% static "base/assets/chart-master/Chart.js" %} ></script>
-   
+
     <!--custome script for all page-->
     <script src={% static "base/js/scripts.js" %} ></script>
     {% block js %} {% endblock %}
@@ -189,7 +192,7 @@
       //knob
       $(function() {
         $(".knob").knob({
-          'draw' : function () { 
+          'draw' : function () {
             $(this.i).val(this.cv + '%')
           }
         })
@@ -211,9 +214,9 @@
       $(function(){
           $('select.styled').customSelect();
       });
-	  
+
 	  /* ---------- Map ---------- */
-	
+
 
 
 

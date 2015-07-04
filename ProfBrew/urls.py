@@ -23,6 +23,9 @@ urlpatterns += patterns('Users.views.login.login',
     url(r'^myprofile/$','load_editable_profile'),
     url(r'^myaccount/$','load_editable_profile_after_session'),
 )
+urlpatterns += patterns('Users.views.profile.update',
+    url(r'^update/$','update'),
+)
 urlpatterns += patterns('Users.views.caller',
     url(r'^register/student/$','caller'),
     url(r'^caller/$','caller'),
@@ -37,6 +40,8 @@ urlpatterns += patterns('Users.views.register.filldb',
 urlpatterns += patterns('Reviews.views.add_reviews',
     url(r'^fresh/review/$','prof_review'),
     url(r'^add/review/$','add_fresh_review'),
+    url(r'^edit/review/$','add_fresh_review'),
+    url(r'^delete/review/$','delete_review'),
 )
 urlpatterns += patterns('Reviews.views.likes',
     url(r'^likes/review/$','likes')

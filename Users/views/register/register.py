@@ -1,6 +1,6 @@
 from University.models import College
 from Users.models import Branch, Student,Users, Professor
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import Users.views
 from django.http.response import HttpResponse
 from ProfBrew.urls import INTERNAL
@@ -43,7 +43,9 @@ def register_student(request):
         Student.objects.create(_username=username,user_type=Users.models.Users.STUDENT,_password=password,name=name,_email=email,_college=clg,_contributing_factor=0,_branch=branch,_degree_pursued=degree,_year=num_year)
         request.session['call_type'] = INTERNAL
         request.session['mnemonics'] = 'LOGIN_PAGE'
-        return Users.views.caller.caller(request)
+        request.session['username'] = username
+        request.session['user_type'] = 'Student'
+        return redirect('/myaccount/')
 
 def username_present(request):
     username = request.POST.get('username',None)

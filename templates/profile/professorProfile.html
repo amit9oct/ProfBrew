@@ -38,7 +38,32 @@
 						csrfmiddlewaretoken: '{{ csrf_token }}'
 					},
 					success: function(data) {
-					document.getElementById('likes'+time_stamp+student_id).innerHTML = data
+					document.getElementById('likes'+time_stamp+student_id).innerHTML = data;
+						/*if(data!=="False"){
+							tempBool = false;
+				        	alert(data);
+				        	location.reload();
+				        }*/
+				    },
+				    failure: function(data) {
+				        alert('Got an error dude');
+				    },
+					dataType: "html"
+			});
+		}
+		function delete_review(student_id,prof_id,time_stamp){
+			$.ajax({
+					type: "POST",
+					url: "/delete/review/",
+					data: {
+						mnemonics : 'DELETE_PROF_REVIEW',
+						prof_id : prof_id,
+						student_id : student_id,
+						time_stamp : time_stamp,
+						csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+					success: function(data) {
+					document.getElementById('review'+time_stamp+student_id).innerHTML = data;
 						/*if(data!=="False"){
 							tempBool = false;
 				        	alert(data);
@@ -85,7 +110,7 @@
     <div class="col-lg-12">
         <h3 class="page-header"><i class="fa fa-user-md"></i> Profile</h3>
         <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+            <li><i class="fa fa-home"></i><a href="/home/">Home</a></li>
             <li><i class="icon_documents_alt"></i>Profs</li>
             <li><i class="fa fa-user-md"></i>{{professor.get_name}}</li>
         </ol>
@@ -97,7 +122,7 @@
         <div class="profile-widget profile-widget-info">
               <div class="panel-body">
                 <div class="col-lg-2 col-sm-2">
-                  <h4>{{professor.get_name}}</h4>               
+                  <h4>{{professor.get_name}}</h4>
                   <div class="follow-ava">
                       <img src="img/profile-widget-avatar.jpg" alt="">
                   </div>
@@ -114,7 +139,7 @@
                                   <i class="fa fa-comments fa-2x"> </i><br>
                                   They inspire you, they entertain you, and you end up learning a ton even when you don’t know it
                               </li>
-                               
+
                           </ul>
                 </div>
               </div>
@@ -153,13 +178,13 @@
                   <div class="tab-content">
                       <div id="recent-activity" class="tab-pane active">
                           {% for review in review_list %}
-                          <div class="profile-activity">                                          
-                              <div class="act-time">                                      
+                          <div id="review{{review.get_timestamp}}{{review.get_student.get_username}}" class="profile-activity">
+                              <div class="act-time">
                                   <div class="activity-body act-in">
                                       <span class="arrow"></span>
                                       <div class="text">
                                           <h4><!-- Yo can href this later to user profile-->
-                                            <font style = "color:#B64C4C;font-size:20px">{{review.get_student.get_username}}</font>  at {{review.get_timestamp}} 
+                                            <font style = "color:#B64C4C;font-size:20px">{{review.get_student.get_username}}</font>  at {{review.get_timestamp}}
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <div class="btn-group">
                                             <button class="btn btn-default " type="submit" onclick="likes(1,'{{review.get_student.get_username}}','{{review.get_professor.get_username}}','{{review.get_timestamp}}')"><i class="fa fa-thumbs-o-up"></i></button>
@@ -167,8 +192,11 @@
                                             </div>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <span id="likes{{review.get_timestamp}}{{review.get_student.get_username}}">{{review.get_number_of_likes}}</span> likes this
+                                            {% ifequal review.get_student.get_username request.session.username %}
+                                            <span id="delete/edit-buttons"><button type="submit" onclick="delete_review('{{review.get_student.get_username}}','{{review.get_professor.get_username}}','{{review.get_timestamp}}')">Delete</button></span>
+                                            {% endifequal %}
                                           </h4>
-                                          <p>{{review.get_review}}</p>
+                                          <p><div>{{review.get_review}}</div></p>
                                       </div>
                                   </div>
                               </div>
@@ -194,7 +222,7 @@
                                   </div>
                                   <div class="bio-row">
                                       <p><span>Known as </span>: {{professor.get_popular_name}}</p>
-                                  </div>                                              
+                                  </div>
                                   <div class="bio-row">
                                       <p><span>Branch</span>: {{professor.get_branch}}</p>
                                   </div>
@@ -226,7 +254,7 @@
                           </div>
                         </section>
                           <section>
-                              <div class="row">                                              
+                              <div class="row">
                               </div>
                           </section>
                       </div>
