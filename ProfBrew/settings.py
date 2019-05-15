@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'profbrew$profbrew',
         'USER':'profbrew',
-        'PASSWORD':'MyNewPass',
+        'PASSWORD':'<will-not-tell>',
         'HOST' : 'mysql.server',
     }
 }
@@ -121,6 +121,6 @@ STATIC_ROOT = '/home/profbrew/ProfBrew/static/' #os.path.join(BASE_DIR, "")
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "mailprofbrew@gmail.com"
-EMAIL_HOST_PASSWORD = 'smiley1807'
+EMAIL_HOST_PASSWORD = '<will-not-tell>'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
